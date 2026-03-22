@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SWAL Learn — Free AI Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #060810;
+      --surface: #0d1117;
+      --border: #1a2235;
+      --accent: #00e5ff;
+      --accent2: #7b61ff;
+      --accent3: #ff6b35;
+      --text: #e8edf5;
+      --muted: #5a6a80;
+      --card: #0f1520;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+    .orb-1 { width: 500px; height: 500px; background: var(--accent2); top: -200px; left: -150px; animation: drift 12s ease-in-out infinite alternate; }
+    .orb-2 { width: 400px; height: 400px; background: var(--accent); bottom: -100px; right: -100px; animation: drift 15s ease-in-out infinite alternate-reverse; }
+    .orb-3 { width: 300px; height: 300px; background: var(--accent3); top: 40%; left: 50%; animation: drift 10s ease-in-out infinite alternate; }
+
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(30px, 20px); } }
+
+    /* ──── NAV ──── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,8,16,0.8);
+      backdrop-filter: blur(16px);
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 800; color: #fff;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff; border: none; padding: 0.6rem 1.4rem;
+      border-radius: 6px; font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.85rem; cursor: pointer;
+      letter-spacing: 0.04em; transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ──── HERO ──── */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      color: var(--accent);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before { content: '◈'; }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff; border: none;
+      padding: 0.9rem 2rem; border-radius: 8px;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+      cursor: pointer; letter-spacing: 0.02em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(123,97,255,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(123,97,255,0.5); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text); border: 1px solid var(--border);
+      padding: 0.9rem 2rem; border-radius: 8px;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+      cursor: pointer; letter-spacing: 0.02em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-stats {
+      margin-top: 4rem;
+      display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.2rem; }
+
+    /* ──── SECTION COMMON ──── */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .section-sub {
+      color: var(--muted); margin-top: 0.75rem;
+      font-size: 1rem; line-height: 1.7;
+      font-family: 'DM Mono', monospace; font-weight: 300;
+      max-width: 480px;
+    }
+
+    /* ──── COURSES ──── */
+    .courses {
+      padding: 6rem 2rem;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .courses-header { margin-bottom: 3rem; }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .course-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .course-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, linear-gradient(90deg, var(--accent2), var(--accent)));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .course-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .course-card:hover { border-color: rgba(0,229,255,0.2); }
+    .course-card:hover::before { opacity: 1; }
+
+    .course-card.ai-basics { --card-accent: linear-gradient(90deg, #00e5ff, #0099cc); }
+    .course-card.prompt-eng { --card-accent: linear-gradient(90deg, #7b61ff, #b44fff); }
+    .course-card.build-ai { --card-accent: linear-gradient(90deg, #ff6b35, #ff9900); }
+    .course-card.ml { --card-accent: linear-gradient(90deg, #00e676, #00bfa5); }
+
+    .course-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.2rem;
+    }
+    .ai-basics .course-icon { background: rgba(0,229,255,0.1); }
+    .prompt-eng .course-icon { background: rgba(123,97,255,0.1); }
+    .build-ai .course-icon { background: rgba(255,107,53,0.1); }
+    .ml .course-icon { background: rgba(0,230,118,0.1); }
+
+    .course-tag {
+      display: inline-block; padding: 0.25rem 0.7rem;
+      border-radius: 999px; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .ai-basics .course-tag { background: rgba(0,229,255,0.1); color: var(--accent); }
+    .prompt-eng .course-tag { background: rgba(123,97,255,0.1); color: var(--accent2); }
+    .build-ai .course-tag { background: rgba(255,107,53,0.1); color: var(--accent3); }
+    .ml .course-tag { background: rgba(0,230,118,0.1); color: #00e676; }
+
+    .course-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .course-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; font-family: 'DM Mono', monospace; font-weight: 300; }
+
+    .course-meta {
+      display: flex; gap: 1rem; margin-top: 1.2rem;
+      padding-top: 1.2rem; border-top: 1px solid var(--border);
+    }
+    .meta-item { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+    .meta-item strong { color: var(--text); }
+
+    .course-cta {
+      margin-top: 1.2rem;
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; font-weight: 700; color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .course-cta::after { content: '→'; transition: transform 0.2s; }
+    .course-card:hover .course-cta::after { transform: translateX(4px); }
+
+    /* ──── WHY SWAL ──── */
+    .why {
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, transparent, rgba(123,97,255,0.04), transparent);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .why-inner { max-width: 1200px; margin: 0 auto; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      margin-top: 3rem;
+    }
+    .why-features { display: flex; flex-direction: column; gap: 1.5rem; }
+    .feature {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .feature-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .feature-text h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .feature-text p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; font-family: 'DM Mono', monospace; font-weight: 300; }
+
+    .why-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .terminal-bar {
+      display: flex; gap: 6px; margin-bottom: 1.2rem;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28ca41; }
+    .terminal-line { font-size: 0.82rem; line-height: 2; color: var(--muted); }
+    .terminal-line .cmd { color: var(--accent); }
+    .terminal-line .str { color: #ff9900; }
+    .terminal-line .kw { color: var(--accent2); }
+    .terminal-line .cmt { color: #3a4a5c; }
+    .cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle; }
+    @keyframes blink { 0%,100%{ opacity:1 } 50%{ opacity:0 } }
+
+    /* ──── FOOTER ──── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-logo { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .footer-logo span { color: var(--accent); }
+    .footer-tagline { font-size: 0.82rem; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 1.5rem; }
+    .footer-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+    /* ──── ANIMATIONS ──── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ──── RESPONSIVE ──── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .why-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">SW</div>
+      SWAL<span>Learn</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#why">Why SWAL</a></li>
+      <li><a href="https://github.com" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-cta">Start Learning →</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">Free AI Education for Everyone</div>
+    <h1>Shape Your World<br/>with <em>AI & Learning</em></h1>
+    <p class="hero-sub">// Free, open-source AI courses built by SWAL Organization. No paywalls. No gatekeeping. Just knowledge.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">Browse Courses</button>
+      <button class="btn-secondary" onclick="window.open('https://github.com','_blank')">View on GitHub →</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">4</div><div class="stat-label">Course Tracks</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free Forever</div></div>
+      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Open Source</div></div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section class="courses" id="courses">
+    <div class="courses-header reveal">
+      <div class="section-label">// what we teach</div>
+      <h2 class="section-title">Choose Your<br/>Learning Track</h2>
+      <p class="section-sub">Four focused tracks to take you from curious beginner to confident AI builder.</p>
+    </div>
+
+    <div class="courses-grid">
+      <div class="course-card ai-basics reveal">
+        <div class="course-icon">🤖</div>
+        <span class="course-tag">Beginner</span>
+        <h3 class="course-title">AI Basics / Intro to AI</h3>
+        <p class="course-desc">Understand what AI really is, how machine learning works, and why it matters — no coding required to get started.</p>
+        <div class="course-meta">
+          <div class="meta-item"><strong>Self-paced</strong></div>
+          <div class="meta-item">Free · Open Source</div>
+        </div>
+        <div class="course-cta">Start Course</div>
+      </div>
+
+      <div class="course-card prompt-eng reveal">
+        <div class="course-icon">✦</div>
+        <span class="course-tag">Intermediate</span>
+        <h3 class="course-title">Prompt Engineering</h3>
+        <p class="course-desc">Master the art of communicating with AI models. Learn how to write prompts that get precise, powerful results every time.</p>
+        <div class="course-meta">
+          <div class="meta-item"><strong>Self-paced</strong></div>
+          <div class="meta-item">Free · Open Source</div>
+        </div>
+        <div class="course-cta">Start Course</div>
+      </div>
+
+      <div class="course-card build-ai reveal">
+        <div class="course-icon">⚡</div>
+        <span class="course-tag">Intermediate</span>
+        <h3 class="course-title">Building AI Apps</h3>
+        <p class="course-desc">Go from idea to deployed app. Build real AI-powered projects using the Claude API, HTML, CSS, and JavaScript.</p>
+        <div class="course-meta">
+          <div class="meta-item"><strong>Self-paced</strong></div>
+          <div class="meta-item">Free · Open Source</div>
+        </div>
+        <div class="course-cta">Start Course</div>
+      </div>
+
+      <div class="course-card ml reveal">
+        <div class="course-icon">🧠</div>
+        <span class="course-tag">Advanced</span>
+        <h3 class="course-title">Machine Learning</h3>
+        <p class="course-desc">Dive into the foundations of ML — data, models, training, and evaluation. Build intuition for how AI systems actually learn.</p>
+        <div class="course-meta">
+          <div class="meta-item"><strong>Self-paced</strong></div>
+          <div class="meta-item">Free · Open Source</div>
+        </div>
+        <div class="course-cta">Start Course</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY SWAL -->
+  <section class="why" id="why">
+    <div class="why-inner">
+      <div class="reveal">
+        <div class="section-label">// our mission</div>
+        <h2 class="section-title">Why SWAL Learn?</h2>
+        <p class="section-sub">We believe AI education should be free, open, and built by people who are learning too.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-features">
+          <div class="feature reveal">
+            <div class="feature-icon">🆓</div>
+            <div class="feature-text">
+              <h4>Always Free</h4>
+              <p>Every course, every lesson, every resource — free forever. No subscriptions, no hidden costs.</p>
+            </div>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon">🌍</div>
+            <div class="feature-text">
+              <h4>Built for Everyone</h4>
+              <p>Whether you're in Lagos, London, or LA — if you have internet, you can learn AI with SWAL.</p>
+            </div>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon">⚙️</div>
+            <div class="feature-text">
+              <h4>Learn by Building</h4>
+              <p>Every track has real projects. You won't just read about AI — you'll build with it.</p>
+            </div>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon">🔓</div>
+            <div class="feature-text">
+              <h4>Open Source</h4>
+              <p>All course materials live on GitHub. Fork it, contribute to it, make it better.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="why-visual reveal">
+          <div class="terminal-bar">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+          </div>
+          <div class="terminal-line"><span class="cmt">// SWAL-Learn v1.0.0</span></div>
+          <div class="terminal-line"><span class="kw">const</span> mission = <span class="str">"Shaping Worlds through AI & Learning"</span>;</div>
+          <div class="terminal-line">&nbsp;</div>
+          <div class="terminal-line"><span class="kw">const</span> courses = [</div>
+          <div class="terminal-line">&nbsp;&nbsp;<span class="str">"AI Basics"</span>,</div>
+          <div class="terminal-line">&nbsp;&nbsp;<span class="str">"Prompt Engineering"</span>,</div>
+          <div class="terminal-line">&nbsp;&nbsp;<span class="str">"Building AI Apps"</span>,</div>
+          <div class="terminal-line">&nbsp;&nbsp;<span class="str">"Machine Learning"</span></div>
+          <div class="terminal-line">];</div>
+          <div class="terminal-line">&nbsp;</div>
+          <div class="terminal-line"><span class="cmd">courses.forEach</span>(c =&gt; <span class="cmd">teach</span>(c, { <span class="kw">price</span>: <span class="str">0</span> }));</div>
+          <div class="terminal-line">&nbsp;</div>
+          <div class="terminal-line"><span class="cmt">// Everyone learns. No exceptions.</span></div>
+          <div class="terminal-line"><span class="cmd">$</span> <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">SWAL<span>Learn</span></div>
+    <div class="footer-tagline">// Shaping Worlds through AI & Learning</div>
+    <div class="footer-links">
+      <a href="#courses">Courses</a>
+      <a href="#why">About</a>
+      <a href="https://github.com" target="_blank">GitHub</a>
+      <a href="#">Contribute</a>
+    </div>
+    <div class="footer-copy">© 2025 SWAL Organization · Free & Open Source · Built with 💙 by Eaze AI</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
