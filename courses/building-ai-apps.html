@@ -1,0 +1,2732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Building AI Apps — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#060810;--border:#1a2235;--accent:#ff6b35;--accent2:#ff9900;--text:#e8edf5;--muted:#5a6a80;--card:#0f1520;--green:#00e676;--red:#ff4757}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,107,53,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,53,.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{display:flex;align-items:center;gap:.5rem;font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}.nav-logo span{color:var(--accent)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:.85rem;font-family:'DM Mono',monospace;transition:color .2s;display:flex;align-items:center;gap:.4rem}.nav-back:hover{color:var(--accent)}
+    .hero{position:relative;z-index:1;padding:3.5rem 2rem 2.5rem;max-width:860px;margin:0 auto;text-align:center}
+    .course-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,107,53,.07);border:1px solid rgba(255,107,53,.18);color:var(--accent);padding:.3rem .9rem;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.2rem}
+    .hero h1{font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:.8rem}
+    .hero h1 em{font-style:normal;color:var(--accent)}
+    .hero-desc{font-size:.95rem;color:var(--muted);line-height:1.7;font-family:'DM Mono',monospace;font-weight:300;max-width:560px;margin:0 auto 1.8rem}
+    .hero-meta{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+    .meta-pill{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.45rem .9rem;font-size:.76rem;font-family:'DM Mono',monospace;color:var(--muted)}.meta-pill strong{color:var(--text)}
+    .progress-wrap{max-width:860px;margin:0 auto 2.5rem;padding:0 2rem;position:relative;z-index:1}
+    .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+    .progress-label{font-size:.75rem;font-family:'DM Mono',monospace;color:var(--muted)}
+    .progress-score{font-size:.75rem;font-family:'DM Mono',monospace;color:var(--accent);font-weight:700}
+    .progress-bar{height:8px;background:var(--border);border-radius:999px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;width:0%;transition:width 1s ease}
+    .progress-steps{display:flex;justify-content:space-between;margin-top:.6rem}
+    .step-dot{width:20px;height:20px;border-radius:50%;background:var(--border);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--muted);font-family:'DM Mono',monospace;transition:all .3s}
+    .step-dot.done{background:var(--accent);border-color:var(--accent);color:#060810}
+    .step-dot.current{background:transparent;border-color:var(--accent);color:var(--accent)}
+    .lessons-wrap{max-width:860px;margin:0 auto;padding:0 2rem 4rem;position:relative;z-index:1}
+    .lessons-label{font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:1.2rem}
+    .lesson-wrap{margin-bottom:1rem}
+    .lesson-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+    .lesson-card.unlocked{cursor:pointer}.lesson-card.unlocked:hover{border-color:rgba(255,107,53,.2);box-shadow:0 8px 40px rgba(0,0,0,.3)}
+    .lesson-card.locked{opacity:.55;cursor:not-allowed}
+    .lesson-card.passed{border-color:rgba(0,230,118,.3)}
+    .lesson-header{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.4rem}
+    .lesson-badge{width:40px;height:40px;border-radius:10px;background:rgba(255,107,53,.07);border:1px solid rgba(255,107,53,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+    .lesson-badge.passed{background:rgba(0,230,118,.15);border-color:var(--green)}
+    .badge-num{font-size:.82rem;font-weight:700;color:var(--accent);font-family:'DM Mono',monospace}
+    .badge-check{font-size:.9rem;color:var(--green)}
+    .lesson-info{flex:1}
+    .lesson-title-text{font-size:.95rem;font-weight:700;margin-bottom:.2rem}
+    .lesson-sub{font-size:.75rem;color:var(--muted);font-family:'DM Mono',monospace}
+    .lesson-status{display:flex;align-items:center;gap:.7rem;flex-shrink:0}
+    .status-pill{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .65rem;border-radius:999px;font-family:'DM Mono',monospace}
+    .status-pill.locked{background:rgba(90,106,128,.1);color:var(--muted);border:1px solid rgba(90,106,128,.2)}
+    .status-pill.unlocked{background:rgba(255,107,53,.08);color:var(--accent);border:1px solid rgba(255,107,53,.2)}
+    .status-pill.passed{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.25)}
+    .status-pill.failed{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.2)}
+    .chevron{color:var(--muted);font-size:1.1rem;transition:transform .3s}
+    .chevron.open{transform:rotate(180deg)}
+    .lesson-body{padding:1.2rem 1.4rem 1.4rem;border-top:1px solid var(--border);font-family:'DM Mono',monospace}
+    .lesson-body h3{font-size:.9rem;font-weight:700;margin:1rem 0 .5rem;color:var(--accent);font-family:'Syne',sans-serif}
+    .lesson-body p{font-size:.86rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:.8rem}
+    .lesson-body ul{margin:.4rem 0 .8rem 1rem}.lesson-body ul li{font-size:.86rem;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:.25rem}.lesson-body ul li::marker{color:var(--accent)}
+    .lesson-body strong{color:var(--text);font-weight:600}
+    .btn-take-test{margin-top:1.2rem;padding:.75rem 1.6rem;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:10px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:opacity .2s,transform .2s;display:inline-flex;align-items:center;gap:.5rem}
+    .btn-take-test:hover{opacity:.88;transform:translateY(-1px)}
+    .test-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:1rem}
+    .test-box{background:#0b1120;border:1px solid var(--border);border-radius:20px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.6)}
+    .test-header{padding:1.5rem 1.8rem;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(255,107,53,.06),rgba(255,107,53,.02))}
+    .test-title-row{display:flex;align-items:center;gap:1rem;margin-bottom:.8rem}
+    .test-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+    .test-title{font-size:1.1rem;font-weight:800}.test-subtitle{font-size:.8rem;color:var(--muted);font-family:'DM Mono',monospace}
+    .test-meta{display:flex;gap:1.2rem;flex-wrap:wrap}
+    .test-meta span{font-size:.75rem;font-family:'DM Mono',monospace;color:var(--muted);background:rgba(255,255,255,.04);padding:.3rem .7rem;border-radius:6px;border:1px solid var(--border)}
+    .timer{color:var(--accent) !important}
+    .test-body{padding:1.5rem 1.8rem}
+    .quiz-question{margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}.quiz-question:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .question-num{font-size:.7rem;font-family:'DM Mono',monospace;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+    .question-text{font-size:.95rem;font-weight:700;line-height:1.5;margin-bottom:1rem;color:var(--text)}
+    .options{display:flex;flex-direction:column;gap:.6rem}
+    .opt-label{display:flex;align-items:center;gap:.8rem;padding:.75rem 1rem;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;user-select:none}
+    .opt-label:hover{border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.04)}
+    .opt-label.selected{border-color:var(--accent2);background:rgba(255,107,53,.1)}
+    .opt-label.correct{border-color:var(--green) !important;background:rgba(0,230,118,.1) !important}
+    .opt-label.wrong{border-color:var(--red) !important;background:rgba(255,71,87,.1) !important}
+    .opt-label input[type=radio]{display:none}
+    .opt-letter{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);flex-shrink:0;transition:all .2s}
+    .opt-label.selected .opt-letter{background:var(--accent2);border-color:var(--accent2);color:#fff}
+    .opt-label.correct .opt-letter{background:var(--green);border-color:var(--green);color:#060810}
+    .opt-label.wrong .opt-letter{background:var(--red);border-color:var(--red);color:#fff}
+    .opt-text{font-size:.88rem;color:var(--muted);line-height:1.5;transition:color .2s}
+    .opt-label.selected .opt-text,.opt-label.correct .opt-text{color:var(--text)}
+    .test-footer{padding:1.2rem 1.8rem;border-top:1px solid var(--border);display:flex;gap:1rem;justify-content:flex-end}
+    .btn-cancel{padding:.65rem 1.4rem;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s}.btn-cancel:hover{border-color:var(--red);color:var(--red)}
+    .btn-submit{padding:.65rem 1.6rem;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:opacity .2s}.btn-submit:hover{opacity:.85}
+    
+    /* ─── ENHANCED RESULT MODAL ─────── */
+    .result-modal{position:fixed;inset:0;z-index:300;background:rgba(6,8,16,.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:1rem}
+    .result-box{background:#0b1120;border:1px solid var(--border);border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 40px 120px rgba(0,0,0,.8);animation:popIn .38s cubic-bezier(.34,1.56,.64,1)}
+    .result-header{padding:1.8rem 2rem 1.4rem;text-align:center;border-bottom:1px solid var(--border)}
+    .result-header-pass{background:linear-gradient(180deg,rgba(0,230,118,.08),transparent)}
+    .result-header-fail{background:linear-gradient(180deg,rgba(255,71,87,.07),transparent)}
+    .result-grade-ring{width:100px;height:100px;position:relative;margin:0 auto .9rem}
+    .ring-track{fill:none;stroke:var(--border);stroke-width:8}
+    .ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+    .ring-fill.pass{stroke:url(#passGrad)}
+    .ring-fill.fail{stroke:#ff4757}
+    .ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .ring-score{font-size:1.3rem;font-weight:800;line-height:1}
+    .ring-score.pass{color:#00e676}
+    .ring-score.fail{color:#ff4757}
+    .ring-grade{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted)}
+    .result-verdict{font-size:1.1rem;font-weight:800;margin-bottom:.3rem}
+    .result-verdict.pass{color:#00e676}
+    .result-verdict.fail{color:#ff4757}
+    .result-tagline{font-size:.8rem;color:var(--muted);font-family:'DM Mono',monospace;font-weight:300;line-height:1.6;margin-bottom:.5rem}
+    .result-tier{display:inline-flex;align-items:center;gap:.4rem;padding:.28rem .75rem;border-radius:999px;font-size:.68rem;font-weight:700;font-family:'DM Mono',monospace;border:1px solid;margin-top:.3rem}
+    .result-tier.s{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.3);color:#00e5ff}
+    .result-tier.a{background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.3);color:#00e676}
+    .result-tier.b{background:rgba(123,97,255,.1);border-color:rgba(123,97,255,.3);color:#a78bff}
+    .result-tier.c{background:rgba(255,211,42,.08);border-color:rgba(255,211,42,.3);color:#ffd32a}
+    .result-tier.f{background:rgba(255,71,87,.08);border-color:rgba(255,71,87,.3);color:#ff4757}
+    .result-stats{display:flex;border-bottom:1px solid var(--border)}
+    .stat-cell{flex:1;padding:.9rem .5rem;text-align:center;border-right:1px solid var(--border)}
+    .stat-cell:last-child{border-right:none}
+    .stat-num{font-size:1.4rem;font-weight:800;margin-bottom:.2rem}
+    .stat-num.green{color:#00e676}
+    .stat-num.red{color:#ff4757}
+    .stat-num.blue{color:var(--accent)}
+    .stat-num.muted{color:var(--muted);font-size:1rem}
+    .stat-lbl{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted)}
+    .result-gauge-wrap{padding:.9rem 1.5rem;border-bottom:1px solid var(--border)}
+    .result-gauge-lbl{display:flex;justify-content:space-between;font-size:.7rem;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:.35rem}
+    .result-gauge-bar{height:8px;background:var(--border);border-radius:999px;overflow:hidden;position:relative}
+    .result-gauge-fill{height:100%;border-radius:999px;transition:width 1.3s cubic-bezier(.4,0,.2,1);width:0%}
+    .result-gauge-fill.pass{background:linear-gradient(90deg,#00bfa5,#00e676)}
+    .result-gauge-fill.fail{background:linear-gradient(90deg,#c62828,#ff4757)}
+    .result-gauge-marker{position:absolute;top:0;bottom:0;width:2px;left:60%;background:#ffd32a}
+    .result-gauge-marker::after{content:'60%';position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:.56rem;color:#ffd32a;font-family:'DM Mono',monospace;white-space:nowrap}
+    .result-breakdown-wrap{padding:.9rem 1.5rem;border-bottom:1px solid var(--border)}
+    .breakdown-title{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:.6rem}
+    .breakdown-list{display:flex;flex-direction:column;gap:.3rem}
+    .breakdown-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-radius:8px;font-size:.8rem;font-family:'DM Mono',monospace}
+    .breakdown-row.c{background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.12)}
+    .breakdown-row.w{background:rgba(255,71,87,.06);border:1px solid rgba(255,71,87,.12)}
+    .breakdown-idx{flex-shrink:0;font-size:.65rem;font-weight:700;width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center}
+    .breakdown-row.c .breakdown-idx{background:rgba(0,230,118,.15);color:#00e676}
+    .breakdown-row.w .breakdown-idx{background:rgba(255,71,87,.15);color:#ff4757}
+    .breakdown-q{flex:1;color:var(--muted);font-size:.76rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .breakdown-tick{flex-shrink:0;font-size:.85rem;font-weight:800}
+    .breakdown-tick.c{color:#00e676}
+    .breakdown-tick.w{color:#ff4757}
+    .need-more-wrap{padding:.7rem 1.5rem;background:rgba(255,211,42,.04);border-bottom:1px solid rgba(255,211,42,.12)}
+    .need-more{font-size:.8rem;font-family:'DM Mono',monospace;color:#ffd32a;text-align:center}
+    .result-actions{padding:1rem 1.5rem;display:flex;gap:.7rem;flex-wrap:wrap}
+    .btn-retry{flex:1;padding:.65rem .8rem;background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:9px;color:#ff4757;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s;min-width:110px}
+    .btn-retry:hover{background:rgba(255,71,87,.15)}
+    .btn-next{flex:2;padding:.65rem 1rem;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:9px;color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;transition:opacity .2s;min-width:140px}
+    .btn-next:hover{opacity:.85}
+    .btn-cert{flex:2;padding:.65rem 1rem;background:linear-gradient(135deg,#ffd32a,#ff9f43);border:none;border-radius:9px;color:#060810;font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;transition:opacity .2s;display:inline-flex;align-items:center;justify-content:center;gap:.4rem}
+    .btn-cert:hover{opacity:.85}
+    /* ─── ENHANCED TEST HEADER ───── */
+    .test-header{padding:1.4rem 1.8rem;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(123,97,255,.07),rgba(0,229,255,.04))}
+    .test-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--accent);margin-bottom:.3rem}
+    .test-title{font-size:1.1rem;font-weight:800;margin-bottom:.15rem}
+    .test-subtitle{font-size:.8rem;color:var(--muted);font-family:'DM Mono',monospace}
+    .test-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem;align-items:center}
+    .test-meta span{font-size:.68rem;font-family:'DM Mono',monospace;color:var(--muted);background:rgba(255,255,255,.04);padding:.25rem .6rem;border-radius:6px;border:1px solid var(--border)}
+    .timer{color:var(--accent)!important;border-color:rgba(0,229,255,.2)!important;background:rgba(0,229,255,.06)!important}
+    .test-progress-wrap{padding:.5rem 1.8rem;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.8rem}
+    .test-progress-label{font-size:.68rem;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap}
+    .test-progress-bar{flex:1;height:4px;background:var(--border);border-radius:999px;overflow:hidden}
+    .test-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;transition:width .3s}
+    .btn-take-test{margin-top:1.2rem;padding:.75rem 1.6rem;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:10px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:opacity .2s,transform .2s;display:inline-flex;align-items:center;gap:.5rem}
+    .btn-take-test:hover{opacity:.88;transform:translateY(-1px)}
+    /* gradient def for ring */
+    .ring-svg-defs{position:absolute;width:0;height:0;overflow:hidden}
+
+    @keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+    @media(max-width:600px){nav{padding:1rem}.test-body{padding:1rem}.test-footer{padding:1rem}.test-header{padding:1rem}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>Learn</span></a>
+  <a class="nav-back" href="../index.html">&#8592; All Courses</a>
+</nav>
+
+<div class="hero">
+  <div class="course-badge">⚡ Intermediate</div>
+  <h1><em>Building AI Apps</em></h1>
+  <p class="hero-desc">Go from idea to deployed app. Build real AI-powered projects using the Claude API, HTML, CSS, and JavaScript — no frameworks needed.</p>
+  <div class="hero-meta">
+    <div class="meta-pill"><strong>10</strong> Lessons</div>
+    <div class="meta-pill"><strong>10</strong> Tests</div>
+    <div class="meta-pill">Pass: <strong>60%</strong> per test</div>
+    <div class="meta-pill"><strong>Free</strong> &middot; Certificate</div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="progress-label">Overall Progress</span>
+    <span class="progress-score" id="overall-score">0 / 10 Passed</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="overall-fill"></div></div>
+  <div class="progress-steps" id="progress-steps"></div>
+</div>
+
+<div class="lessons-wrap">
+  <div class="lessons-label">// lessons &amp; tests</div>
+
+  <div class="lesson-wrap" id="lesson-1">
+    <div class="lesson-card unlocked" id="card-1">
+      <div class="lesson-header" onclick="toggleLesson(1)">
+        <div class="lesson-badge" id="badge-1">
+          <span class="badge-num">01</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">What We're Building</div>
+          <div class="lesson-sub">Course overview and project roadmap</div>
+        </div>
+        <div class="lesson-status" id="status-1">
+          <span class="status-pill unlocked" id="pill-1">Unlocked</span>
+          <span class="chevron" id="chev-1">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-1" style="display:none">
+        <h3>Course Projects</h3><p>By the end of this course you will build 3 real AI-powered apps deployed live on GitHub Pages: an AI Chat Assistant, an AI Text Analyser, and an AI Study Buddy quiz generator.</p><h3>What You Need</h3><ul><li>Basic HTML and CSS knowledge</li><li>A GitHub account (free)</li><li>An Anthropic API key</li><li>A text editor (Acode on Android or VS Code)</li></ul><h3>Tech Stack</h3><p>We use pure HTML, CSS, and JavaScript — no React, no Node.js. Everything runs in the browser and deploys to GitHub Pages for free. This is intentional: the simpler the stack, the faster you can focus on the AI logic.</p>
+        <button class="btn-take-test" onclick="openTest(1)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-1" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 1 Test</div><div class="test-subtitle">What We're Building</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-1">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-1-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">How many AI-powered apps will you build in this course?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-1-0-0">
+                <input type="radio" name="q1_0" value="0" onchange="selectOpt(this,1,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">1</span>
+              </label>
+              <label class="opt-label" id="opt-1-0-1">
+                <input type="radio" name="q1_0" value="1" onchange="selectOpt(this,1,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">2</span>
+              </label>
+              <label class="opt-label" id="opt-1-0-2">
+                <input type="radio" name="q1_0" value="2" onchange="selectOpt(this,1,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">3</span>
+              </label>
+              <label class="opt-label" id="opt-1-0-3">
+                <input type="radio" name="q1_0" value="3" onchange="selectOpt(this,1,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">5</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-1-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">What is the tech stack for this course?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-1-1-0">
+                <input type="radio" name="q1_1" value="0" onchange="selectOpt(this,1,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">React and Node.js</span>
+              </label>
+              <label class="opt-label" id="opt-1-1-1">
+                <input type="radio" name="q1_1" value="1" onchange="selectOpt(this,1,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Pure HTML, CSS, and JavaScript</span>
+              </label>
+              <label class="opt-label" id="opt-1-1-2">
+                <input type="radio" name="q1_1" value="2" onchange="selectOpt(this,1,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Python and Django</span>
+              </label>
+              <label class="opt-label" id="opt-1-1-3">
+                <input type="radio" name="q1_1" value="3" onchange="selectOpt(this,1,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Vue and Express</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-1-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">Where will the finished apps be deployed?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-1-2-0">
+                <input type="radio" name="q1_2" value="0" onchange="selectOpt(this,1,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Heroku</span>
+              </label>
+              <label class="opt-label" id="opt-1-2-1">
+                <input type="radio" name="q1_2" value="1" onchange="selectOpt(this,1,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">AWS</span>
+              </label>
+              <label class="opt-label" id="opt-1-2-2">
+                <input type="radio" name="q1_2" value="2" onchange="selectOpt(this,1,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">GitHub Pages</span>
+              </label>
+              <label class="opt-label" id="opt-1-2-3">
+                <input type="radio" name="q1_2" value="3" onchange="selectOpt(this,1,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Firebase Hosting</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-1-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">Which of these is NOT required for this course?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-1-3-0">
+                <input type="radio" name="q1_3" value="0" onchange="selectOpt(this,1,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">A GitHub account</span>
+              </label>
+              <label class="opt-label" id="opt-1-3-1">
+                <input type="radio" name="q1_3" value="1" onchange="selectOpt(this,1,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">An Anthropic API key</span>
+              </label>
+              <label class="opt-label" id="opt-1-3-2">
+                <input type="radio" name="q1_3" value="2" onchange="selectOpt(this,1,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">A paid cloud server</span>
+              </label>
+              <label class="opt-label" id="opt-1-3-3">
+                <input type="radio" name="q1_3" value="3" onchange="selectOpt(this,1,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Basic HTML knowledge</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-1-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">Why use a simple tech stack for this course?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-1-4-0">
+                <input type="radio" name="q1_4" value="0" onchange="selectOpt(this,1,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Because it's the only option</span>
+              </label>
+              <label class="opt-label" id="opt-1-4-1">
+                <input type="radio" name="q1_4" value="1" onchange="selectOpt(this,1,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">To focus on the AI logic without complex setup</span>
+              </label>
+              <label class="opt-label" id="opt-1-4-2">
+                <input type="radio" name="q1_4" value="2" onchange="selectOpt(this,1,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Because it's faster to type</span>
+              </label>
+              <label class="opt-label" id="opt-1-4-3">
+                <input type="radio" name="q1_4" value="3" onchange="selectOpt(this,1,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Because GitHub Pages requires it</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(1)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(1)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-1" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-1">
+          <div class="result-grade-ring" id="rring-1">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-1" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-1">0%</div>
+              <div class="ring-grade" id="rgrade-1">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-1">—</div>
+          <div class="result-tagline" id="rtagline-1"></div>
+          <div class="result-tier" id="rtier-1">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-1">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-1">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-1">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-1">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-1"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-1" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-1"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-1" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-1" onclick="retryTest(1)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-1" onclick="nextLesson(1)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-1" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-2">
+    <div class="lesson-card locked" id="card-2">
+      <div class="lesson-header" onclick="toggleLesson(2)">
+        <div class="lesson-badge" id="badge-2">
+          <span class="badge-num">02</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Understanding APIs</div>
+          <div class="lesson-sub">What APIs are and how they power AI apps</div>
+        </div>
+        <div class="lesson-status" id="status-2">
+          <span class="status-pill locked" id="pill-2">Locked</span>
+          <span class="chevron" id="chev-2">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-2" style="display:none">
+        <h3>What is an API?</h3><p>An API (Application Programming Interface) is a way for two pieces of software to talk to each other. Think of it like a waiter — you tell the waiter what you want, they go to the kitchen, and bring back your food. You don't need to know how the kitchen works.</p><h3>The Claude API</h3><p>Anthropic's API lets your app send messages to Claude and receive responses programmatically. Your app sends a request, Claude processes it, and sends back a response.</p><h3>What is an API Key?</h3><p>An API key is a unique password that identifies your app when making requests. It's how Anthropic knows who is making the call and tracks usage. Keep it secret — never share it publicly or commit it to a public GitHub repo.</p>
+        <button class="btn-take-test" onclick="openTest(2)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-2" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 2 Test</div><div class="test-subtitle">Understanding APIs</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-2">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-2-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">What does API stand for?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-2-0-0">
+                <input type="radio" name="q2_0" value="0" onchange="selectOpt(this,2,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Automated Programming Interface</span>
+              </label>
+              <label class="opt-label" id="opt-2-0-1">
+                <input type="radio" name="q2_0" value="1" onchange="selectOpt(this,2,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Application Programming Interface</span>
+              </label>
+              <label class="opt-label" id="opt-2-0-2">
+                <input type="radio" name="q2_0" value="2" onchange="selectOpt(this,2,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Advanced Processing Input</span>
+              </label>
+              <label class="opt-label" id="opt-2-0-3">
+                <input type="radio" name="q2_0" value="3" onchange="selectOpt(this,2,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Automated Program Installer</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-2-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">In the waiter analogy, what is the API?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-2-1-0">
+                <input type="radio" name="q2_1" value="0" onchange="selectOpt(this,2,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">The food</span>
+              </label>
+              <label class="opt-label" id="opt-2-1-1">
+                <input type="radio" name="q2_1" value="1" onchange="selectOpt(this,2,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">The customer</span>
+              </label>
+              <label class="opt-label" id="opt-2-1-2">
+                <input type="radio" name="q2_1" value="2" onchange="selectOpt(this,2,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">The waiter that delivers requests between kitchen and customer</span>
+              </label>
+              <label class="opt-label" id="opt-2-1-3">
+                <input type="radio" name="q2_1" value="3" onchange="selectOpt(this,2,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">The kitchen</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-2-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">What is an API key?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-2-2-0">
+                <input type="radio" name="q2_2" value="0" onchange="selectOpt(this,2,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">A USB dongle</span>
+              </label>
+              <label class="opt-label" id="opt-2-2-1">
+                <input type="radio" name="q2_2" value="1" onchange="selectOpt(this,2,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">A unique password that identifies your app to the API</span>
+              </label>
+              <label class="opt-label" id="opt-2-2-2">
+                <input type="radio" name="q2_2" value="2" onchange="selectOpt(this,2,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">A type of encryption algorithm</span>
+              </label>
+              <label class="opt-label" id="opt-2-2-3">
+                <input type="radio" name="q2_2" value="3" onchange="selectOpt(this,2,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">A programming language</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-2-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">What should you NEVER do with your API key?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-2-3-0">
+                <input type="radio" name="q2_3" value="0" onchange="selectOpt(this,2,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Use it in your app</span>
+              </label>
+              <label class="opt-label" id="opt-2-3-1">
+                <input type="radio" name="q2_3" value="1" onchange="selectOpt(this,2,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Keep it secret</span>
+              </label>
+              <label class="opt-label" id="opt-2-3-2">
+                <input type="radio" name="q2_3" value="2" onchange="selectOpt(this,2,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Share it publicly or commit it to GitHub</span>
+              </label>
+              <label class="opt-label" id="opt-2-3-3">
+                <input type="radio" name="q2_3" value="3" onchange="selectOpt(this,2,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Rotate it periodically</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-2-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">The Claude API lets your app:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-2-4-0">
+                <input type="radio" name="q2_4" value="0" onchange="selectOpt(this,2,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Store files on Anthropic's servers</span>
+              </label>
+              <label class="opt-label" id="opt-2-4-1">
+                <input type="radio" name="q2_4" value="1" onchange="selectOpt(this,2,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Send messages to Claude and receive responses programmatically</span>
+              </label>
+              <label class="opt-label" id="opt-2-4-2">
+                <input type="radio" name="q2_4" value="2" onchange="selectOpt(this,2,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Access Claude's training data</span>
+              </label>
+              <label class="opt-label" id="opt-2-4-3">
+                <input type="radio" name="q2_4" value="3" onchange="selectOpt(this,2,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Deploy directly to GitHub Pages</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(2)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(2)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-2" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-2">
+          <div class="result-grade-ring" id="rring-2">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-2" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-2">0%</div>
+              <div class="ring-grade" id="rgrade-2">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-2">—</div>
+          <div class="result-tagline" id="rtagline-2"></div>
+          <div class="result-tier" id="rtier-2">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-2">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-2">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-2">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-2">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-2"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-2" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-2"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-2" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-2" onclick="retryTest(2)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-2" onclick="nextLesson(2)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-2" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-3">
+    <div class="lesson-card locked" id="card-3">
+      <div class="lesson-header" onclick="toggleLesson(3)">
+        <div class="lesson-badge" id="badge-3">
+          <span class="badge-num">03</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Getting Your Anthropic API Key</div>
+          <div class="lesson-sub">Step-by-step setup guide</div>
+        </div>
+        <div class="lesson-status" id="status-3">
+          <span class="status-pill locked" id="pill-3">Locked</span>
+          <span class="chevron" id="chev-3">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-3" style="display:none">
+        <h3>Step 1 — Create an Account</h3><p>Go to console.anthropic.com and sign up with your email address.</p><h3>Step 2 — Get Your API Key</h3><ul><li>Click 'API Keys' in the left sidebar</li><li>Click 'Create Key'</li><li>Give it a name like 'my-first-project'</li><li>Copy the key immediately — you won't see it again</li></ul><h3>Step 3 — Understand the Costs</h3><p>The Claude API is paid but very affordable. For learning and small projects the costs are minimal — typically a few cents for hundreds of messages. New accounts often get free credits to start.</p><h3>Step 4 — Keep It Safe</h3><p>Never paste your API key directly in code you push to GitHub. Use environment variables or a backend proxy for production apps.</p>
+        <button class="btn-take-test" onclick="openTest(3)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-3" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 3 Test</div><div class="test-subtitle">Getting Your Anthropic API Key</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-3">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-3-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">Where do you get an Anthropic API key?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-3-0-0">
+                <input type="radio" name="q3_0" value="0" onchange="selectOpt(this,3,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">anthropic.com/home</span>
+              </label>
+              <label class="opt-label" id="opt-3-0-1">
+                <input type="radio" name="q3_0" value="1" onchange="selectOpt(this,3,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">console.anthropic.com</span>
+              </label>
+              <label class="opt-label" id="opt-3-0-2">
+                <input type="radio" name="q3_0" value="2" onchange="selectOpt(this,3,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">github.com/anthropic</span>
+              </label>
+              <label class="opt-label" id="opt-3-0-3">
+                <input type="radio" name="q3_0" value="3" onchange="selectOpt(this,3,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">api.claude.ai</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-3-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">What should you do immediately after creating an API key?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-3-1-0">
+                <input type="radio" name="q3_1" value="0" onchange="selectOpt(this,3,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Share it with your team</span>
+              </label>
+              <label class="opt-label" id="opt-3-1-1">
+                <input type="radio" name="q3_1" value="1" onchange="selectOpt(this,3,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Copy it immediately — you won't see it again</span>
+              </label>
+              <label class="opt-label" id="opt-3-1-2">
+                <input type="radio" name="q3_1" value="2" onchange="selectOpt(this,3,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Leave the page</span>
+              </label>
+              <label class="opt-label" id="opt-3-1-3">
+                <input type="radio" name="q3_1" value="3" onchange="selectOpt(this,3,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Post it on GitHub</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-3-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">How expensive is the Claude API for learning projects?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-3-2-0">
+                <input type="radio" name="q3_2" value="0" onchange="selectOpt(this,3,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Very expensive — hundreds of dollars per project</span>
+              </label>
+              <label class="opt-label" id="opt-3-2-1">
+                <input type="radio" name="q3_2" value="1" onchange="selectOpt(this,3,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Very affordable — typically a few cents for hundreds of messages</span>
+              </label>
+              <label class="opt-label" id="opt-3-2-2">
+                <input type="radio" name="q3_2" value="2" onchange="selectOpt(this,3,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Free forever with no limits</span>
+              </label>
+              <label class="opt-label" id="opt-3-2-3">
+                <input type="radio" name="q3_2" value="3" onchange="selectOpt(this,3,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Costs $10 per message</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-3-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">Where should you NOT paste your API key?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-3-3-0">
+                <input type="radio" name="q3_3" value="0" onchange="selectOpt(this,3,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">In your local .env file</span>
+              </label>
+              <label class="opt-label" id="opt-3-3-1">
+                <input type="radio" name="q3_3" value="1" onchange="selectOpt(this,3,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">In a private note</span>
+              </label>
+              <label class="opt-label" id="opt-3-3-2">
+                <input type="radio" name="q3_3" value="2" onchange="selectOpt(this,3,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Directly in code you push to a public GitHub repo</span>
+              </label>
+              <label class="opt-label" id="opt-3-3-3">
+                <input type="radio" name="q3_3" value="3" onchange="selectOpt(this,3,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">In your password manager</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-3-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">New Anthropic accounts often receive:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-3-4-0">
+                <input type="radio" name="q3_4" value="0" onchange="selectOpt(this,3,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">A free Claude subscription</span>
+              </label>
+              <label class="opt-label" id="opt-3-4-1">
+                <input type="radio" name="q3_4" value="1" onchange="selectOpt(this,3,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Free API credits to start</span>
+              </label>
+              <label class="opt-label" id="opt-3-4-2">
+                <input type="radio" name="q3_4" value="2" onchange="selectOpt(this,3,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">A free server</span>
+              </label>
+              <label class="opt-label" id="opt-3-4-3">
+                <input type="radio" name="q3_4" value="3" onchange="selectOpt(this,3,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Free domain hosting</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(3)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(3)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-3" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-3">
+          <div class="result-grade-ring" id="rring-3">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-3" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-3">0%</div>
+              <div class="ring-grade" id="rgrade-3">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-3">—</div>
+          <div class="result-tagline" id="rtagline-3"></div>
+          <div class="result-tier" id="rtier-3">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-3">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-3">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-3">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-3">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-3"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-3" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-3"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-3" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-3" onclick="retryTest(3)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-3" onclick="nextLesson(3)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-3" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-4">
+    <div class="lesson-card locked" id="card-4">
+      <div class="lesson-header" onclick="toggleLesson(4)">
+        <div class="lesson-badge" id="badge-4">
+          <span class="badge-num">04</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Your First API Call</div>
+          <div class="lesson-sub">Making Claude respond with JavaScript fetch()</div>
+        </div>
+        <div class="lesson-status" id="status-4">
+          <span class="status-pill locked" id="pill-4">Locked</span>
+          <span class="chevron" id="chev-4">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-4" style="display:none">
+        <h3>The Fetch API</h3><p>JavaScript's fetch() function lets your browser make HTTP requests to external servers — including the Claude API. You send a POST request with your message and receive a JSON response containing Claude's reply.</p><h3>Key Parameters</h3><ul><li><strong>method: 'POST'</strong> — We're sending data, not just retrieving</li><li><strong>headers</strong> — Authentication (your API key) and format info</li><li><strong>model</strong> — Which Claude model to use (e.g. claude-haiku-4-5-20251001)</li><li><strong>max_tokens</strong> — Maximum length of the response</li><li><strong>messages</strong> — The conversation history as an array</li></ul><h3>Reading the Response</h3><p>The response comes back as JSON. The actual text reply is at data.content[0].text — always access it this way.</p>
+        <button class="btn-take-test" onclick="openTest(4)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-4" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 4 Test</div><div class="test-subtitle">Your First API Call</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-4">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-4-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">Which JavaScript function is used to call the Claude API?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-4-0-0">
+                <input type="radio" name="q4_0" value="0" onchange="selectOpt(this,4,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">axios()</span>
+              </label>
+              <label class="opt-label" id="opt-4-0-1">
+                <input type="radio" name="q4_0" value="1" onchange="selectOpt(this,4,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">fetch()</span>
+              </label>
+              <label class="opt-label" id="opt-4-0-2">
+                <input type="radio" name="q4_0" value="2" onchange="selectOpt(this,4,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">request()</span>
+              </label>
+              <label class="opt-label" id="opt-4-0-3">
+                <input type="radio" name="q4_0" value="3" onchange="selectOpt(this,4,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">call()</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-4-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">What HTTP method do you use to call the Claude API?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-4-1-0">
+                <input type="radio" name="q4_1" value="0" onchange="selectOpt(this,4,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">GET</span>
+              </label>
+              <label class="opt-label" id="opt-4-1-1">
+                <input type="radio" name="q4_1" value="1" onchange="selectOpt(this,4,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">DELETE</span>
+              </label>
+              <label class="opt-label" id="opt-4-1-2">
+                <input type="radio" name="q4_1" value="2" onchange="selectOpt(this,4,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">PUT</span>
+              </label>
+              <label class="opt-label" id="opt-4-1-3">
+                <input type="radio" name="q4_1" value="3" onchange="selectOpt(this,4,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">POST</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-4-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">Where in the response JSON is the text reply from Claude?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-4-2-0">
+                <input type="radio" name="q4_2" value="0" onchange="selectOpt(this,4,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">data.text</span>
+              </label>
+              <label class="opt-label" id="opt-4-2-1">
+                <input type="radio" name="q4_2" value="1" onchange="selectOpt(this,4,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">data.content[0].text</span>
+              </label>
+              <label class="opt-label" id="opt-4-2-2">
+                <input type="radio" name="q4_2" value="2" onchange="selectOpt(this,4,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">data.reply</span>
+              </label>
+              <label class="opt-label" id="opt-4-2-3">
+                <input type="radio" name="q4_2" value="3" onchange="selectOpt(this,4,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">data.message</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-4-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">What does max_tokens control?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-4-3-0">
+                <input type="radio" name="q4_3" value="0" onchange="selectOpt(this,4,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">How many requests you can make</span>
+              </label>
+              <label class="opt-label" id="opt-4-3-1">
+                <input type="radio" name="q4_3" value="1" onchange="selectOpt(this,4,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">The maximum length of Claude's response</span>
+              </label>
+              <label class="opt-label" id="opt-4-3-2">
+                <input type="radio" name="q4_3" value="2" onchange="selectOpt(this,4,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">The size of your API key</span>
+              </label>
+              <label class="opt-label" id="opt-4-3-3">
+                <input type="radio" name="q4_3" value="3" onchange="selectOpt(this,4,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">The request timeout</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-4-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">The messages array in the API request contains:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-4-4-0">
+                <input type="radio" name="q4_4" value="0" onchange="selectOpt(this,4,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Only the current user message</span>
+              </label>
+              <label class="opt-label" id="opt-4-4-1">
+                <input type="radio" name="q4_4" value="1" onchange="selectOpt(this,4,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">The full conversation history as an array of role/content objects</span>
+              </label>
+              <label class="opt-label" id="opt-4-4-2">
+                <input type="radio" name="q4_4" value="2" onchange="selectOpt(this,4,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Only system instructions</span>
+              </label>
+              <label class="opt-label" id="opt-4-4-3">
+                <input type="radio" name="q4_4" value="3" onchange="selectOpt(this,4,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Only assistant replies</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(4)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(4)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-4" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-4">
+          <div class="result-grade-ring" id="rring-4">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-4" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-4">0%</div>
+              <div class="ring-grade" id="rgrade-4">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-4">—</div>
+          <div class="result-tagline" id="rtagline-4"></div>
+          <div class="result-tier" id="rtier-4">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-4">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-4">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-4">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-4">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-4"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-4" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-4"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-4" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-4" onclick="retryTest(4)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-4" onclick="nextLesson(4)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-4" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-5">
+    <div class="lesson-card locked" id="card-5">
+      <div class="lesson-header" onclick="toggleLesson(5)">
+        <div class="lesson-badge" id="badge-5">
+          <span class="badge-num">05</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Project 1 — Build an AI Chat App</div>
+          <div class="lesson-sub">A complete chatbot in under 100 lines of code</div>
+        </div>
+        <div class="lesson-status" id="status-5">
+          <span class="status-pill locked" id="pill-5">Locked</span>
+          <span class="chevron" id="chev-5">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-5" style="display:none">
+        <h3>What We're Building</h3><p>A simple chat interface where users type messages and get AI responses. Clean design, conversation history, and loading states.</p><h3>Conversation History</h3><p>The key to a working chatbot is maintaining conversation history. Every time the user sends a message: add it to the messages array, call the API with the full array, get the reply, add it to the array too. This is how Claude remembers the context of your conversation.</p><h3>The addMessage() Function</h3><p>You need a function that takes a role ('user' or 'assistant') and content, then appends a styled message bubble to the chat UI. Always scroll to the bottom after adding each message.</p><h3>Loading State</h3><p>While waiting for the API, show a 'Thinking...' indicator and disable the send button to prevent duplicate requests.</p>
+        <button class="btn-take-test" onclick="openTest(5)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-5" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 5 Test</div><div class="test-subtitle">Project 1 — Build an AI Chat App</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-5">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-5-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">What is the key to a working AI chatbot?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-5-0-0">
+                <input type="radio" name="q5_0" value="0" onchange="selectOpt(this,5,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Using React</span>
+              </label>
+              <label class="opt-label" id="opt-5-0-1">
+                <input type="radio" name="q5_0" value="1" onchange="selectOpt(this,5,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Maintaining conversation history in the messages array</span>
+              </label>
+              <label class="opt-label" id="opt-5-0-2">
+                <input type="radio" name="q5_0" value="2" onchange="selectOpt(this,5,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Using a paid hosting plan</span>
+              </label>
+              <label class="opt-label" id="opt-5-0-3">
+                <input type="radio" name="q5_0" value="3" onchange="selectOpt(this,5,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Using Python</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-5-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">When should you scroll to the bottom of the chat?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-5-1-0">
+                <input type="radio" name="q5_1" value="0" onchange="selectOpt(this,5,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Only at page load</span>
+              </label>
+              <label class="opt-label" id="opt-5-1-1">
+                <input type="radio" name="q5_1" value="1" onchange="selectOpt(this,5,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">After adding each new message</span>
+              </label>
+              <label class="opt-label" id="opt-5-1-2">
+                <input type="radio" name="q5_1" value="2" onchange="selectOpt(this,5,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Every 5 seconds</span>
+              </label>
+              <label class="opt-label" id="opt-5-1-3">
+                <input type="radio" name="q5_1" value="3" onchange="selectOpt(this,5,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">When the user clicks a button</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-5-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">Why should you disable the send button while waiting for the API?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-5-2-0">
+                <input type="radio" name="q5_2" value="0" onchange="selectOpt(this,5,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">To save bandwidth</span>
+              </label>
+              <label class="opt-label" id="opt-5-2-1">
+                <input type="radio" name="q5_2" value="1" onchange="selectOpt(this,5,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">To prevent duplicate requests while the previous one is processing</span>
+              </label>
+              <label class="opt-label" id="opt-5-2-2">
+                <input type="radio" name="q5_2" value="2" onchange="selectOpt(this,5,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Because the API requires it</span>
+              </label>
+              <label class="opt-label" id="opt-5-2-3">
+                <input type="radio" name="q5_2" value="3" onchange="selectOpt(this,5,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">To improve security</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-5-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">In the messages array, what two roles exist?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-5-3-0">
+                <input type="radio" name="q5_3" value="0" onchange="selectOpt(this,5,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">'human' and 'ai'</span>
+              </label>
+              <label class="opt-label" id="opt-5-3-1">
+                <input type="radio" name="q5_3" value="1" onchange="selectOpt(this,5,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">'user' and 'assistant'</span>
+              </label>
+              <label class="opt-label" id="opt-5-3-2">
+                <input type="radio" name="q5_3" value="2" onchange="selectOpt(this,5,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">'sender' and 'receiver'</span>
+              </label>
+              <label class="opt-label" id="opt-5-3-3">
+                <input type="radio" name="q5_3" value="3" onchange="selectOpt(this,5,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">'input' and 'output'</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-5-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">A 'Thinking...' loading indicator is important because:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-5-4-0">
+                <input type="radio" name="q5_4" value="0" onchange="selectOpt(this,5,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">It makes the app look bigger</span>
+              </label>
+              <label class="opt-label" id="opt-5-4-1">
+                <input type="radio" name="q5_4" value="1" onchange="selectOpt(this,5,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">It reassures the user the app is working and not frozen</span>
+              </label>
+              <label class="opt-label" id="opt-5-4-2">
+                <input type="radio" name="q5_4" value="2" onchange="selectOpt(this,5,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">The API requires it</span>
+              </label>
+              <label class="opt-label" id="opt-5-4-3">
+                <input type="radio" name="q5_4" value="3" onchange="selectOpt(this,5,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">It prevents CORS errors</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(5)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(5)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-5" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-5">
+          <div class="result-grade-ring" id="rring-5">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-5" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-5">0%</div>
+              <div class="ring-grade" id="rgrade-5">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-5">—</div>
+          <div class="result-tagline" id="rtagline-5"></div>
+          <div class="result-tier" id="rtier-5">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-5">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-5">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-5">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-5">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-5"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-5" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-5"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-5" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-5" onclick="retryTest(5)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-5" onclick="nextLesson(5)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-5" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-6">
+    <div class="lesson-card locked" id="card-6">
+      <div class="lesson-header" onclick="toggleLesson(6)">
+        <div class="lesson-badge" id="badge-6">
+          <span class="badge-num">06</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Handling Errors & Loading States</div>
+          <div class="lesson-sub">Making your app robust and user-friendly</div>
+        </div>
+        <div class="lesson-status" id="status-6">
+          <span class="status-pill locked" id="pill-6">Locked</span>
+          <span class="chevron" id="chev-6">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-6" style="display:none">
+        <h3>Why Error Handling Matters</h3><p>APIs can fail — internet goes down, key expires, rate limit is hit. Without error handling your app will silently break. Good apps handle errors gracefully and tell the user what happened.</p><h3>Try-Catch-Finally Pattern</h3><p>Wrap your API calls in try-catch: the 'try' block runs your request, 'catch' handles any error that occurs, and 'finally' always runs — use it to hide your loading state regardless of whether the request succeeded or failed.</p><h3>Checking Status Codes</h3><p>After a fetch() call, always check if (!response.ok) and throw an error if the status is not 200. Common errors: 401 = invalid API key, 429 = rate limit exceeded, 500 = server error.</p><h3>User-Friendly Messages</h3><p>Never show raw error messages to users. Translate them: 'Something went wrong. Please check your connection and try again.'</p>
+        <button class="btn-take-test" onclick="openTest(6)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-6" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 6 Test</div><div class="test-subtitle">Handling Errors & Loading States</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-6">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-6-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">What does the 'finally' block in try-catch-finally do?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-6-0-0">
+                <input type="radio" name="q6_0" value="0" onchange="selectOpt(this,6,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Runs only when an error occurs</span>
+              </label>
+              <label class="opt-label" id="opt-6-0-1">
+                <input type="radio" name="q6_0" value="1" onchange="selectOpt(this,6,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Runs only when the request succeeds</span>
+              </label>
+              <label class="opt-label" id="opt-6-0-2">
+                <input type="radio" name="q6_0" value="2" onchange="selectOpt(this,6,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Always runs regardless of success or failure</span>
+              </label>
+              <label class="opt-label" id="opt-6-0-3">
+                <input type="radio" name="q6_0" value="3" onchange="selectOpt(this,6,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Cancels the request</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-6-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">HTTP status code 401 typically means:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-6-1-0">
+                <input type="radio" name="q6_1" value="0" onchange="selectOpt(this,6,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Server error</span>
+              </label>
+              <label class="opt-label" id="opt-6-1-1">
+                <input type="radio" name="q6_1" value="1" onchange="selectOpt(this,6,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Rate limit exceeded</span>
+              </label>
+              <label class="opt-label" id="opt-6-1-2">
+                <input type="radio" name="q6_1" value="2" onchange="selectOpt(this,6,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Invalid API key or unauthorized</span>
+              </label>
+              <label class="opt-label" id="opt-6-1-3">
+                <input type="radio" name="q6_1" value="3" onchange="selectOpt(this,6,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Request timeout</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-6-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">What should you show users when an error occurs?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-6-2-0">
+                <input type="radio" name="q6_2" value="0" onchange="selectOpt(this,6,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">The raw technical error message</span>
+              </label>
+              <label class="opt-label" id="opt-6-2-1">
+                <input type="radio" name="q6_2" value="1" onchange="selectOpt(this,6,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">A friendly, readable error message</span>
+              </label>
+              <label class="opt-label" id="opt-6-2-2">
+                <input type="radio" name="q6_2" value="2" onchange="selectOpt(this,6,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Nothing at all</span>
+              </label>
+              <label class="opt-label" id="opt-6-2-3">
+                <input type="radio" name="q6_2" value="3" onchange="selectOpt(this,6,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">The API key</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-6-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">When should the loading state be hidden?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-6-3-0">
+                <input type="radio" name="q6_3" value="0" onchange="selectOpt(this,6,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Only when the request succeeds</span>
+              </label>
+              <label class="opt-label" id="opt-6-3-1">
+                <input type="radio" name="q6_3" value="1" onchange="selectOpt(this,6,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Only when an error occurs</span>
+              </label>
+              <label class="opt-label" id="opt-6-3-2">
+                <input type="radio" name="q6_3" value="2" onchange="selectOpt(this,6,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">In the finally block — always, regardless of outcome</span>
+              </label>
+              <label class="opt-label" id="opt-6-3-3">
+                <input type="radio" name="q6_3" value="3" onchange="selectOpt(this,6,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">After 5 seconds</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-6-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">HTTP 429 means:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-6-4-0">
+                <input type="radio" name="q6_4" value="0" onchange="selectOpt(this,6,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Invalid API key</span>
+              </label>
+              <label class="opt-label" id="opt-6-4-1">
+                <input type="radio" name="q6_4" value="1" onchange="selectOpt(this,6,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">The request succeeded</span>
+              </label>
+              <label class="opt-label" id="opt-6-4-2">
+                <input type="radio" name="q6_4" value="2" onchange="selectOpt(this,6,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Rate limit exceeded — too many requests</span>
+              </label>
+              <label class="opt-label" id="opt-6-4-3">
+                <input type="radio" name="q6_4" value="3" onchange="selectOpt(this,6,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">File not found</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(6)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(6)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-6" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-6">
+          <div class="result-grade-ring" id="rring-6">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-6" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-6">0%</div>
+              <div class="ring-grade" id="rgrade-6">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-6">—</div>
+          <div class="result-tagline" id="rtagline-6"></div>
+          <div class="result-tier" id="rtier-6">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-6">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-6">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-6">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-6">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-6"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-6" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-6"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-6" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-6" onclick="retryTest(6)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-6" onclick="nextLesson(6)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-6" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-7">
+    <div class="lesson-card locked" id="card-7">
+      <div class="lesson-header" onclick="toggleLesson(7)">
+        <div class="lesson-badge" id="badge-7">
+          <span class="badge-num">07</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">System Prompts in Your App</div>
+          <div class="lesson-sub">Customizing Claude's personality for your use case</div>
+        </div>
+        <div class="lesson-status" id="status-7">
+          <span class="status-pill locked" id="pill-7">Locked</span>
+          <span class="chevron" id="chev-7">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-7" style="display:none">
+        <h3>Adding a System Prompt</h3><p>You can give your AI app a custom personality using the 'system' parameter in your API request body. This runs before any user messages and shapes every response Claude gives.</p><h3>What to Include in a System Prompt</h3><ul><li>Who the AI is (name, role, expertise)</li><li>What it should and shouldn't talk about</li><li>Tone and communication style</li><li>Any specific formatting rules</li></ul><h3>The Power of Specialization</h3><p>A generic AI becomes a specialist product with one well-written system prompt. This is how most AI startups build products — they're all using the same underlying API, differentiated by their system prompt design.</p><h3>Example</h3><p>System: 'You are SWAL AI, a helpful coding assistant for beginner developers in Africa. You explain things simply, use relatable analogies, and always encourage the user. Never write code without explaining what it does.'</p>
+        <button class="btn-take-test" onclick="openTest(7)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-7" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 7 Test</div><div class="test-subtitle">System Prompts in Your App</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-7">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-7-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">Where in the API request do you add a system prompt?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-7-0-0">
+                <input type="radio" name="q7_0" value="0" onchange="selectOpt(this,7,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">In the messages array with role='system'</span>
+              </label>
+              <label class="opt-label" id="opt-7-0-1">
+                <input type="radio" name="q7_0" value="1" onchange="selectOpt(this,7,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">As the 'system' parameter in the request body</span>
+              </label>
+              <label class="opt-label" id="opt-7-0-2">
+                <input type="radio" name="q7_0" value="2" onchange="selectOpt(this,7,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">In the URL</span>
+              </label>
+              <label class="opt-label" id="opt-7-0-3">
+                <input type="radio" name="q7_0" value="3" onchange="selectOpt(this,7,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">In the HTTP headers</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-7-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">When does the system prompt run relative to user messages?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-7-1-0">
+                <input type="radio" name="q7_1" value="0" onchange="selectOpt(this,7,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">After all user messages</span>
+              </label>
+              <label class="opt-label" id="opt-7-1-1">
+                <input type="radio" name="q7_1" value="1" onchange="selectOpt(this,7,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Before any user messages</span>
+              </label>
+              <label class="opt-label" id="opt-7-1-2">
+                <input type="radio" name="q7_1" value="2" onchange="selectOpt(this,7,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Between every user message</span>
+              </label>
+              <label class="opt-label" id="opt-7-1-3">
+                <input type="radio" name="q7_1" value="3" onchange="selectOpt(this,7,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Only once at the end</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-7-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">What makes a system prompt 'powerful'?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-7-2-0">
+                <input type="radio" name="q7_2" value="0" onchange="selectOpt(this,7,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Making it very long</span>
+              </label>
+              <label class="opt-label" id="opt-7-2-1">
+                <input type="radio" name="q7_2" value="1" onchange="selectOpt(this,7,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Clearly defining role, tone, constraints, and goal</span>
+              </label>
+              <label class="opt-label" id="opt-7-2-2">
+                <input type="radio" name="q7_2" value="2" onchange="selectOpt(this,7,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Using technical jargon</span>
+              </label>
+              <label class="opt-label" id="opt-7-2-3">
+                <input type="radio" name="q7_2" value="3" onchange="selectOpt(this,7,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Keeping it vague</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-7-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">Most AI startups differentiate their product through:</div>
+            <div class="options">
+              <label class="opt-label" id="opt-7-3-0">
+                <input type="radio" name="q7_3" value="0" onchange="selectOpt(this,7,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Having more GPUs</span>
+              </label>
+              <label class="opt-label" id="opt-7-3-1">
+                <input type="radio" name="q7_3" value="1" onchange="selectOpt(this,7,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Their system prompt design</span>
+              </label>
+              <label class="opt-label" id="opt-7-3-2">
+                <input type="radio" name="q7_3" value="2" onchange="selectOpt(this,7,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Having a better dataset</span>
+              </label>
+              <label class="opt-label" id="opt-7-3-3">
+                <input type="radio" name="q7_3" value="3" onchange="selectOpt(this,7,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Using a different programming language</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-7-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">Which of these should a system prompt NOT include?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-7-4-0">
+                <input type="radio" name="q7_4" value="0" onchange="selectOpt(this,7,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">The AI's role</span>
+              </label>
+              <label class="opt-label" id="opt-7-4-1">
+                <input type="radio" name="q7_4" value="1" onchange="selectOpt(this,7,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">The communication tone</span>
+              </label>
+              <label class="opt-label" id="opt-7-4-2">
+                <input type="radio" name="q7_4" value="2" onchange="selectOpt(this,7,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Your personal API key</span>
+              </label>
+              <label class="opt-label" id="opt-7-4-3">
+                <input type="radio" name="q7_4" value="3" onchange="selectOpt(this,7,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">What topics to avoid</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(7)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(7)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-7" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-7">
+          <div class="result-grade-ring" id="rring-7">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-7" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-7">0%</div>
+              <div class="ring-grade" id="rgrade-7">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-7">—</div>
+          <div class="result-tagline" id="rtagline-7"></div>
+          <div class="result-tier" id="rtier-7">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-7">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-7">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-7">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-7">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-7"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-7" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-7"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-7" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-7" onclick="retryTest(7)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-7" onclick="nextLesson(7)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-7" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-8">
+    <div class="lesson-card locked" id="card-8">
+      <div class="lesson-header" onclick="toggleLesson(8)">
+        <div class="lesson-badge" id="badge-8">
+          <span class="badge-num">08</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Project 2 — AI Text Analyser</div>
+          <div class="lesson-sub">Building a multi-feature text processing tool</div>
+        </div>
+        <div class="lesson-status" id="status-8">
+          <span class="status-pill locked" id="pill-8">Locked</span>
+          <span class="chevron" id="chev-8">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-8" style="display:none">
+        <h3>What We're Building</h3><p>A tool where users paste any text and click buttons to get: a summary, sentiment analysis, key points, or a simplified version — all powered by the Claude API.</p><h3>The Multi-Action Pattern</h3><p>Instead of one fixed prompt, we create an object of prompts keyed by action name. When the user clicks a button, we look up the corresponding prompt and call the API with it.</p><h3>Dynamic Prompts</h3><p>Each action uses a different instruction but the same user text: 'Summarize this in 3 bullet points: [text]', 'Analyse the sentiment: [text]', 'Extract 5 key points: [text]', 'Rewrite for a 12-year-old: [text]'.</p><h3>Displaying Rich Output</h3><p>Use innerHTML (carefully) to render formatted markdown-like responses, or use a simple markdown parser to convert **bold** and bullet points to HTML for a polished display.</p>
+        <button class="btn-take-test" onclick="openTest(8)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-8" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 8 Test</div><div class="test-subtitle">Project 2 — AI Text Analyser</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-8">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-8-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">In the multi-action pattern, how are different prompts organised?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-8-0-0">
+                <input type="radio" name="q8_0" value="0" onchange="selectOpt(this,8,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">As separate functions in different files</span>
+              </label>
+              <label class="opt-label" id="opt-8-0-1">
+                <input type="radio" name="q8_0" value="1" onchange="selectOpt(this,8,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">As an object keyed by action name</span>
+              </label>
+              <label class="opt-label" id="opt-8-0-2">
+                <input type="radio" name="q8_0" value="2" onchange="selectOpt(this,8,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">As a database table</span>
+              </label>
+              <label class="opt-label" id="opt-8-0-3">
+                <input type="radio" name="q8_0" value="3" onchange="selectOpt(this,8,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">As separate HTML files</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-8-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">What does the AI Text Analyser do?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-8-1-0">
+                <input type="radio" name="q8_1" value="0" onchange="selectOpt(this,8,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Only summarizes text</span>
+              </label>
+              <label class="opt-label" id="opt-8-1-1">
+                <input type="radio" name="q8_1" value="1" onchange="selectOpt(this,8,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Provides summary, sentiment, key points, and simplified version from one text input</span>
+              </label>
+              <label class="opt-label" id="opt-8-1-2">
+                <input type="radio" name="q8_1" value="2" onchange="selectOpt(this,8,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Only translates text</span>
+              </label>
+              <label class="opt-label" id="opt-8-1-3">
+                <input type="radio" name="q8_1" value="3" onchange="selectOpt(this,8,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Only checks grammar</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-8-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">How do dynamic prompts work in this pattern?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-8-2-0">
+                <input type="radio" name="q8_2" value="0" onchange="selectOpt(this,8,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Each button makes a different API call with a different instruction on the same text</span>
+              </label>
+              <label class="opt-label" id="opt-8-2-1">
+                <input type="radio" name="q8_2" value="1" onchange="selectOpt(this,8,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Each button calls a different AI model</span>
+              </label>
+              <label class="opt-label" id="opt-8-2-2">
+                <input type="radio" name="q8_2" value="2" onchange="selectOpt(this,8,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">The user types a new prompt each time</span>
+              </label>
+              <label class="opt-label" id="opt-8-2-3">
+                <input type="radio" name="q8_2" value="3" onchange="selectOpt(this,8,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">The AI decides which action to perform</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-8-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">What should you be careful about when using innerHTML?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-8-3-0">
+                <input type="radio" name="q8_3" value="0" onchange="selectOpt(this,8,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">It's slower than textContent</span>
+              </label>
+              <label class="opt-label" id="opt-8-3-1">
+                <input type="radio" name="q8_3" value="1" onchange="selectOpt(this,8,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">It can run malicious scripts if you're not sanitizing user input</span>
+              </label>
+              <label class="opt-label" id="opt-8-3-2">
+                <input type="radio" name="q8_3" value="2" onchange="selectOpt(this,8,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">It doesn't work in Chrome</span>
+              </label>
+              <label class="opt-label" id="opt-8-3-3">
+                <input type="radio" name="q8_3" value="3" onchange="selectOpt(this,8,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">It only renders images</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-8-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">Why use multiple action buttons instead of one general input?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-8-4-0">
+                <input type="radio" name="q8_4" value="0" onchange="selectOpt(this,8,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">To limit API usage</span>
+              </label>
+              <label class="opt-label" id="opt-8-4-1">
+                <input type="radio" name="q8_4" value="1" onchange="selectOpt(this,8,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">To give users a guided, structured experience with clear use cases</span>
+              </label>
+              <label class="opt-label" id="opt-8-4-2">
+                <input type="radio" name="q8_4" value="2" onchange="selectOpt(this,8,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Because the API requires it</span>
+              </label>
+              <label class="opt-label" id="opt-8-4-3">
+                <input type="radio" name="q8_4" value="3" onchange="selectOpt(this,8,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">To avoid writing long prompts</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(8)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(8)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-8" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-8">
+          <div class="result-grade-ring" id="rring-8">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-8" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-8">0%</div>
+              <div class="ring-grade" id="rgrade-8">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-8">—</div>
+          <div class="result-tagline" id="rtagline-8"></div>
+          <div class="result-tier" id="rtier-8">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-8">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-8">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-8">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-8">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-8"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-8" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-8"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-8" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-8" onclick="retryTest(8)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-8" onclick="nextLesson(8)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-8" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-9">
+    <div class="lesson-card locked" id="card-9">
+      <div class="lesson-header" onclick="toggleLesson(9)">
+        <div class="lesson-badge" id="badge-9">
+          <span class="badge-num">09</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Deploying to GitHub Pages</div>
+          <div class="lesson-sub">Making your AI app live on the internet for free</div>
+        </div>
+        <div class="lesson-status" id="status-9">
+          <span class="status-pill locked" id="pill-9">Locked</span>
+          <span class="chevron" id="chev-9">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-9" style="display:none">
+        <h3>GitHub Pages = Free Hosting</h3><p>GitHub Pages hosts static HTML/CSS/JS files for free. Every account gets a site at username.github.io. Perfect for our AI apps.</p><h3>Deployment Steps</h3><ul><li>Create a new repository on GitHub</li><li>Upload your files (index.html + any others)</li><li>Go to Settings → Pages → select main branch → Save</li><li>Wait 2–3 minutes — your app is live!</li></ul><h3>The CORS Problem</h3><p>When calling the Anthropic API directly from a browser on GitHub Pages, you'll hit a CORS (Cross-Origin Resource Sharing) error. The API blocks direct browser calls for security.</p><h3>Solution: Cloudflare Workers Proxy</h3><p>Create a free Cloudflare Worker that sits between your frontend and the API. Your frontend calls the Worker, the Worker calls the API. This takes 10 minutes to set up and is completely free on Cloudflare's free tier.</p>
+        <button class="btn-take-test" onclick="openTest(9)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-9" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 9 Test</div><div class="test-subtitle">Deploying to GitHub Pages</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-9">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-9-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">Where is GitHub Pages found in a repository's settings?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-9-0-0">
+                <input type="radio" name="q9_0" value="0" onchange="selectOpt(this,9,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Settings → Security</span>
+              </label>
+              <label class="opt-label" id="opt-9-0-1">
+                <input type="radio" name="q9_0" value="1" onchange="selectOpt(this,9,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Settings → Pages</span>
+              </label>
+              <label class="opt-label" id="opt-9-0-2">
+                <input type="radio" name="q9_0" value="2" onchange="selectOpt(this,9,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Settings → Actions</span>
+              </label>
+              <label class="opt-label" id="opt-9-0-3">
+                <input type="radio" name="q9_0" value="3" onchange="selectOpt(this,9,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Settings → Domains</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-9-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">What URL format does GitHub Pages use?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-9-1-0">
+                <input type="radio" name="q9_1" value="0" onchange="selectOpt(this,9,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">yourname.pages.dev</span>
+              </label>
+              <label class="opt-label" id="opt-9-1-1">
+                <input type="radio" name="q9_1" value="1" onchange="selectOpt(this,9,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">yourname.github.io</span>
+              </label>
+              <label class="opt-label" id="opt-9-1-2">
+                <input type="radio" name="q9_1" value="2" onchange="selectOpt(this,9,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">yourname.vercel.app</span>
+              </label>
+              <label class="opt-label" id="opt-9-1-3">
+                <input type="radio" name="q9_1" value="3" onchange="selectOpt(this,9,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">yourname.netlify.app</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-9-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">What does CORS stand for?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-9-2-0">
+                <input type="radio" name="q9_2" value="0" onchange="selectOpt(this,9,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Code Origin Resource Server</span>
+              </label>
+              <label class="opt-label" id="opt-9-2-1">
+                <input type="radio" name="q9_2" value="1" onchange="selectOpt(this,9,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Cross-Origin Resource Sharing</span>
+              </label>
+              <label class="opt-label" id="opt-9-2-2">
+                <input type="radio" name="q9_2" value="2" onchange="selectOpt(this,9,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Client Object Request System</span>
+              </label>
+              <label class="opt-label" id="opt-9-2-3">
+                <input type="radio" name="q9_2" value="3" onchange="selectOpt(this,9,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Cached Output Response Storage</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-9-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">Why do you get a CORS error when calling the Anthropic API from GitHub Pages?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-9-3-0">
+                <input type="radio" name="q9_3" value="0" onchange="selectOpt(this,9,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">GitHub blocks all external calls</span>
+              </label>
+              <label class="opt-label" id="opt-9-3-1">
+                <input type="radio" name="q9_3" value="1" onchange="selectOpt(this,9,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">The API blocks direct browser calls for security reasons</span>
+              </label>
+              <label class="opt-label" id="opt-9-3-2">
+                <input type="radio" name="q9_3" value="2" onchange="selectOpt(this,9,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Your API key is wrong</span>
+              </label>
+              <label class="opt-label" id="opt-9-3-3">
+                <input type="radio" name="q9_3" value="3" onchange="selectOpt(this,9,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">GitHub Pages doesn't support JavaScript</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-9-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">What is the recommended solution for the CORS problem?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-9-4-0">
+                <input type="radio" name="q9_4" value="0" onchange="selectOpt(this,9,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Use a different AI</span>
+              </label>
+              <label class="opt-label" id="opt-9-4-1">
+                <input type="radio" name="q9_4" value="1" onchange="selectOpt(this,9,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Use a Cloudflare Workers proxy between your frontend and the API</span>
+              </label>
+              <label class="opt-label" id="opt-9-4-2">
+                <input type="radio" name="q9_4" value="2" onchange="selectOpt(this,9,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Host on a paid server</span>
+              </label>
+              <label class="opt-label" id="opt-9-4-3">
+                <input type="radio" name="q9_4" value="3" onchange="selectOpt(this,9,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Download the AI locally</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(9)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(9)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-9" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-9">
+          <div class="result-grade-ring" id="rring-9">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-9" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-9">0%</div>
+              <div class="ring-grade" id="rgrade-9">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-9">—</div>
+          <div class="result-tagline" id="rtagline-9"></div>
+          <div class="result-tier" id="rtier-9">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-9">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-9">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-9">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-9">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-9"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-9" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-9"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-9" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-9" onclick="retryTest(9)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-9" onclick="nextLesson(9)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-9" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson-wrap" id="lesson-10">
+    <div class="lesson-card locked" id="card-10">
+      <div class="lesson-header" onclick="toggleLesson(10)">
+        <div class="lesson-badge" id="badge-10">
+          <span class="badge-num">10</span>
+          <span class="badge-check" style="display:none">&#10003;</span>
+        </div>
+        <div class="lesson-info">
+          <div class="lesson-title-text">Project 3 — AI Study Buddy & Next Steps</div>
+          <div class="lesson-sub">Your final project and where to go from here</div>
+        </div>
+        <div class="lesson-status" id="status-10">
+          <span class="status-pill locked" id="pill-10">Locked</span>
+          <span class="chevron" id="chev-10">&#8964;</span>
+        </div>
+      </div>
+      <div class="lesson-body" id="body-10" style="display:none">
+        <h3>The AI Study Buddy</h3><p>Users enter any topic and instantly get a 5-question multiple-choice quiz with answers. Perfect for students preparing for exams — and it uses everything you've learned in this course.</p><h3>The Quiz Generation Prompt</h3><p>The key is prompting Claude to return JSON-formatted quiz data that you can parse and render dynamically. Ask for: question text, 4 options (A–D), and the correct answer letter — all as a JSON array.</p><h3>What You've Built</h3><ul><li>AI Chat Assistant with conversation history</li><li>AI Text Analyser with multiple analysis modes</li><li>AI Study Buddy quiz generator</li><li>Error handling and loading states</li><li>Live deployment on GitHub Pages</li></ul><h3>Where to Go Next</h3><ul><li>Add Firebase authentication to your apps</li><li>Learn React for more complex UIs</li><li>Explore the full Claude API docs at docs.anthropic.com</li><li>Build something that solves a real problem near you</li></ul>
+        <button class="btn-take-test" onclick="openTest(10)">&#128221; Take Test to Continue</button>
+      </div>
+    </div>
+
+    <div class="test-modal" id="test-10" style="display:none">
+      <div class="test-box">
+        <div class="test-header">
+          <div class="test-title-row">
+            <div class="test-icon">&#128221;</div>
+            <div><div class="test-title">Lesson 10 Test</div><div class="test-subtitle">Project 3 — AI Study Buddy & Next Steps</div></div>
+          </div>
+          <div class="test-meta">
+            <span>5 Questions</span>
+            <span>Pass: 60%</span>
+            <span>Multiple Choice</span>
+            <span class="timer" id="test-timer-10">&#9201; 5:00</span>
+          </div>
+        </div>
+        <div class="test-body">
+          <form onsubmit="return false">
+          <div class="quiz-question" id="qq-10-0">
+            <div class="question-num">Question 1 of 5</div>
+            <div class="question-text">What does the AI Study Buddy generate?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-10-0-0">
+                <input type="radio" name="q10_0" value="0" onchange="selectOpt(this,10,0,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Flashcards only</span>
+              </label>
+              <label class="opt-label" id="opt-10-0-1">
+                <input type="radio" name="q10_0" value="1" onchange="selectOpt(this,10,0,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">A 5-question multiple-choice quiz on any topic the user enters</span>
+              </label>
+              <label class="opt-label" id="opt-10-0-2">
+                <input type="radio" name="q10_0" value="2" onchange="selectOpt(this,10,0,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Essays on demand</span>
+              </label>
+              <label class="opt-label" id="opt-10-0-3">
+                <input type="radio" name="q10_0" value="3" onchange="selectOpt(this,10,0,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">A summary of a textbook</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-10-1">
+            <div class="question-num">Question 2 of 5</div>
+            <div class="question-text">What format should you ask Claude to return quiz data in for easy parsing?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-10-1-0">
+                <input type="radio" name="q10_1" value="0" onchange="selectOpt(this,10,1,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Plain text</span>
+              </label>
+              <label class="opt-label" id="opt-10-1-1">
+                <input type="radio" name="q10_1" value="1" onchange="selectOpt(this,10,1,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">HTML tables</span>
+              </label>
+              <label class="opt-label" id="opt-10-1-2">
+                <input type="radio" name="q10_1" value="2" onchange="selectOpt(this,10,1,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">JSON</span>
+              </label>
+              <label class="opt-label" id="opt-10-1-3">
+                <input type="radio" name="q10_1" value="3" onchange="selectOpt(this,10,1,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">CSV</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-10-2">
+            <div class="question-num">Question 3 of 5</div>
+            <div class="question-text">How many AI apps have you built by the end of this course?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-10-2-0">
+                <input type="radio" name="q10_2" value="0" onchange="selectOpt(this,10,2,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">1</span>
+              </label>
+              <label class="opt-label" id="opt-10-2-1">
+                <input type="radio" name="q10_2" value="1" onchange="selectOpt(this,10,2,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">2</span>
+              </label>
+              <label class="opt-label" id="opt-10-2-2">
+                <input type="radio" name="q10_2" value="2" onchange="selectOpt(this,10,2,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">3</span>
+              </label>
+              <label class="opt-label" id="opt-10-2-3">
+                <input type="radio" name="q10_2" value="3" onchange="selectOpt(this,10,2,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">4</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-10-3">
+            <div class="question-num">Question 4 of 5</div>
+            <div class="question-text">What is the recommended next step for more complex UIs after this course?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-10-3-0">
+                <input type="radio" name="q10_3" value="0" onchange="selectOpt(this,10,3,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">Learn Python</span>
+              </label>
+              <label class="opt-label" id="opt-10-3-1">
+                <input type="radio" name="q10_3" value="1" onchange="selectOpt(this,10,3,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">Learn React</span>
+              </label>
+              <label class="opt-label" id="opt-10-3-2">
+                <input type="radio" name="q10_3" value="2" onchange="selectOpt(this,10,3,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">Learn PHP</span>
+              </label>
+              <label class="opt-label" id="opt-10-3-3">
+                <input type="radio" name="q10_3" value="3" onchange="selectOpt(this,10,3,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">Learn Swift</span>
+              </label>
+            </div>
+          </div>
+          <div class="quiz-question" id="qq-10-4">
+            <div class="question-num">Question 5 of 5</div>
+            <div class="question-text">Where can you find the full Claude API documentation?</div>
+            <div class="options">
+              <label class="opt-label" id="opt-10-4-0">
+                <input type="radio" name="q10_4" value="0" onchange="selectOpt(this,10,4,0)"/>
+                <span class="opt-letter">A</span>
+                <span class="opt-text">claude.ai/chat</span>
+              </label>
+              <label class="opt-label" id="opt-10-4-1">
+                <input type="radio" name="q10_4" value="1" onchange="selectOpt(this,10,4,1)"/>
+                <span class="opt-letter">B</span>
+                <span class="opt-text">docs.anthropic.com</span>
+              </label>
+              <label class="opt-label" id="opt-10-4-2">
+                <input type="radio" name="q10_4" value="2" onchange="selectOpt(this,10,4,2)"/>
+                <span class="opt-letter">C</span>
+                <span class="opt-text">github.com/anthropic/docs</span>
+              </label>
+              <label class="opt-label" id="opt-10-4-3">
+                <input type="radio" name="q10_4" value="3" onchange="selectOpt(this,10,4,3)"/>
+                <span class="opt-letter">D</span>
+                <span class="opt-text">console.anthropic.com/help</span>
+              </label>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="test-footer">
+          <button class="btn-cancel" onclick="closeTest(10)">Cancel</button>
+          <button class="btn-submit" onclick="submitTest(10)">Submit Test &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+        <div class="result-modal" id="result-10" style="display:none">
+      <div class="result-box">
+        <!-- header -->
+        <div class="result-header" id="rheader-10">
+          <div class="result-grade-ring" id="rring-10">
+            <svg viewBox="0 0 100 100"><circle class="ring-track" cx="50" cy="50" r="45"/><circle class="ring-fill" id="rfill-10" cx="50" cy="50" r="45"/></svg>
+            <div class="ring-inner">
+              <div class="ring-score" id="rscore-10">0%</div>
+              <div class="ring-grade" id="rgrade-10">—</div>
+            </div>
+          </div>
+          <div class="result-verdict" id="rverdict-10">—</div>
+          <div class="result-tagline" id="rtagline-10"></div>
+          <div class="result-tier" id="rtier-10">—</div>
+        </div>
+        <!-- stats row -->
+        <div class="result-stats">
+          <div class="stat-cell"><div class="stat-num green" id="rcorrect-10">—</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-cell"><div class="stat-num red" id="rwrong-10">—</div><div class="stat-lbl">Wrong</div></div>
+          <div class="stat-cell"><div class="stat-num blue" id="rpct-10">—</div><div class="stat-lbl">Score</div></div><div class="stat-cell"><div class="stat-num muted" id="rtime-10">—</div><div class="stat-lbl">Time</div></div>
+        </div>
+        <!-- breakdown -->
+
+        <div class="result-gauge-wrap">
+          <div class="result-gauge-lbl"><span>Score vs Pass Mark</span><span id="rgauge-lbl-10"> </span></div>
+          <div class="result-gauge-bar">
+            <div class="result-gauge-fill" id="rgauge-10" style="width:0%"></div>
+            <div class="result-gauge-marker"></div>
+          </div>
+        </div>
+        <div class="result-breakdown-wrap">
+          <div class="breakdown-title">// question breakdown</div>
+          <div class="breakdown-list" id="rbreakdown-10"></div>
+        </div>
+        <!-- need more info -->
+        <div class="need-more-wrap" id="rneedmore-10" style="display:none">
+          <div class="need-more">You need <strong>60%</strong> to pass — review the lesson and try again.</div>
+        </div>
+        <!-- actions -->
+        <div class="result-actions">
+          <button class="btn-retry" id="btn-retry-10" onclick="retryTest(10)" style="display:none">&#8635; Retry Test</button>
+          <button class="btn-next" id="btn-next-10" onclick="nextLesson(10)" style="display:none">Next Lesson &rarr;</button>
+          <button class="btn-cert" id="btn-cert-10" onclick="window.location.href='../index.html#certificate'" style="display:none">&#127942; Get Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="cert-cta">
+  <div class="cert-box" id="cert-cta-box">
+    <h3>&#127942; All Lessons Passed! Claim Your Certificate</h3>
+    <p>You've passed all 10 tests for Building AI Apps. Generate your official SWAL Learn certificate now.</p>
+    <a href="../index.html#certificate">Generate Certificate &rarr;</a>
+  </div>
+</div>
+
+<footer>SWAL Learn &mdash; Shaping Worlds through AI &amp; Learning &mdash; Free &amp; Open Source</footer>
+
+<script>
+const ANSWERS = [
+  [2,1,2,2,1],
+  [1,2,1,2,1],
+  [1,1,1,2,1],
+  [1,3,1,1,1],
+  [1,1,1,1,1],
+  [2,2,1,2,2],
+  [1,1,1,1,2],
+  [1,1,0,1,1],
+  [1,1,1,1,1],
+  [1,2,2,1,1],
+];
+const TOTAL = 10;
+
+const passed = new Array(TOTAL+1).fill(false);
+const scores = {};
+const currentAnswers = {};
+const timers = {};
+const timeStopped = {};
+
+function getTier(pct){
+  if(pct===100) return {cls:'s',label:'S — Perfect Score',icon:'⭐'};
+  if(pct>=80)  return {cls:'a',label:'A — Excellent',icon:'🏆'};
+  if(pct>=60)  return {cls:'b',label:'B — Passed',icon:'✅'};
+  if(pct>=40)  return {cls:'c',label:'C — Almost',icon:'📚'};
+  return {cls:'f',label:'F — Needs Review',icon:'📖'};
+}
+
+
+// Build step dots
+(function(){
+  const wrap = document.getElementById('progress-steps');
+  for(let i=1;i<=TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'step-dot'+(i===1?' current':'');
+    d.id = 'dot-'+i;
+    d.textContent = i;
+    wrap.appendChild(d);
+  }
+})();
+
+function setLessonState(n, state){
+  const card = document.getElementById('card-'+n);
+  const pill = document.getElementById('pill-'+n);
+  const badge = document.getElementById('badge-'+n);
+  if(!card) return;
+  card.className = 'lesson-card '+state;
+  pill.className = 'status-pill '+state;
+  if(state==='passed'){
+    pill.textContent='Passed';
+    badge.classList.add('passed');
+    badge.querySelector('.badge-num').style.display='none';
+    badge.querySelector('.badge-check').style.display='';
+    const dot = document.getElementById('dot-'+n);
+    if(dot){dot.className='step-dot done';dot.textContent='✓';}
+  } else if(state==='failed'){
+    pill.textContent='Failed — Retry';
+  } else if(state==='unlocked'){
+    pill.textContent='Unlocked';
+    const dot = document.getElementById('dot-'+n);
+    if(dot) dot.className='step-dot current';
+  }
+}
+
+function toggleLesson(n){
+  const card = document.getElementById('card-'+n);
+  if(card.classList.contains('locked')) return;
+  const body = document.getElementById('body-'+n);
+  const chev = document.getElementById('chev-'+n);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  chev.classList.toggle('open', !isOpen);
+}
+
+function openTest(n){
+  // Reset answers for this lesson
+  currentAnswers[n] = {};
+  // Reset radio buttons
+  document.querySelectorAll('[name^="q'+n+'_"]').forEach(r=>{r.checked=false;});
+  // Reset option styles
+  document.querySelectorAll('[id^="opt-'+n+'-"]').forEach(l=>{l.className='opt-label';});
+  document.getElementById('test-'+n).style.display='flex';
+  startTimer(n, 300);
+}
+
+function closeTest(n){
+  document.getElementById('test-'+n).style.display='none';
+  clearInterval(timers[n]);
+}
+
+function selectOpt(input, lesson, qi, oi){
+  const siblings = document.querySelectorAll('[name="q'+lesson+'_'+qi+'"]');
+  siblings.forEach(s=>{
+    const lbl = document.getElementById('opt-'+lesson+'-'+qi+'-'+s.value);
+    if(lbl) lbl.classList.remove('selected');
+  });
+  const lbl = document.getElementById('opt-'+lesson+'-'+qi+'-'+oi);
+  if(lbl) lbl.classList.add('selected');
+  if(!currentAnswers[lesson]) currentAnswers[lesson]={};
+  currentAnswers[lesson][qi] = oi;
+}
+
+function submitTest(n){
+  clearInterval(timers[n]);
+  timeStopped[n] = timers[n+"_elapsed"] || 0;
+  const ans = ANSWERS[n-1];
+  let correct = 0;
+  const breakdown = [];
+  for(let qi=0;qi<ans.length;qi++){
+    const selected = currentAnswers[n]?.[qi];
+    const isCorrect = selected === ans[qi];
+    if(isCorrect) correct++;
+    for(let oi=0;oi<4;oi++){
+      const lbl = document.getElementById('opt-'+n+'-'+qi+'-'+oi);
+      if(!lbl) continue;
+      if(oi===ans[qi]) lbl.classList.add('correct');
+      else if(oi===selected && !isCorrect) lbl.classList.add('wrong');
+    }
+    const qText = document.querySelector('#qq-'+n+'-'+qi+' .question-text').textContent;
+    breakdown.push({q: qText.substring(0,50)+(qText.length>50?'...':''), correct: isCorrect});
+  }
+  const pct = Math.round((correct/ans.length)*100);
+  scores[n] = pct;
+  const didPass = pct >= 60;
+  if(didPass) passed[n] = true;
+  setTimeout(()=>{
+    document.getElementById('test-'+n).style.display='none';
+    showResult(n, pct, correct, ans.length, didPass, breakdown);
+  }, 1200);
+}
+
+function showResult(n, pct, correct, total, didPass, breakdown){
+  const rm = document.getElementById('result-'+n);
+  rm.style.display='flex';
+  const wrong = total - correct;
+  const grade = pct>=90?'A':pct>=80?'B':pct>=70?'C':pct>=60?'D':'F';
+  const grades = {A:'Outstanding',B:'Great Work',C:'Good Job',D:'Just Passed',F:'Not Yet'};
+  const taglines = {
+    A: 'Perfect score territory — you nailed this lesson!',
+    B: 'Solid understanding. Keep this momentum going.',
+    C: 'Decent effort. A bit more review and you will ace it.',
+    D: 'Scraped through — revisit the material to solidify your knowledge.',
+    F: 'Not quite there yet. Re-read the lesson carefully and try again.'
+  };
+  const tier = getTier(pct);
+  const timeTaken = timeStopped[n] || 0;
+  const m = Math.floor(timeTaken/60), s = timeTaken%60;
+  const timeStr = m>0?m+'m '+s+'s':s+'s';
+
+  const hdr = document.getElementById('rheader-'+n);
+  hdr.className = 'result-header '+(didPass?'result-header-pass':'result-header-fail');
+
+  const fillEl = document.getElementById('rfill-'+n);
+  fillEl.className = 'ring-fill '+(didPass?'pass':'fail');
+  const circumference = 283;
+  const offset = circumference - (pct/100)*circumference;
+  setTimeout(()=>{ fillEl.style.strokeDashoffset = offset; }, 80);
+
+  const scoreEl = document.getElementById('rscore-'+n);
+  scoreEl.className = 'ring-score '+(didPass?'pass':'fail');
+  let counter = 0;
+  const step = Math.ceil(pct/40);
+  const ticker = setInterval(()=>{
+    counter = Math.min(counter+step, pct);
+    scoreEl.textContent = counter+'%';
+    if(counter>=pct) clearInterval(ticker);
+  },30);
+
+  document.getElementById('rgrade-'+n).textContent = 'Grade '+grade;
+  const verdictEl = document.getElementById('rverdict-'+n);
+  verdictEl.textContent = didPass ? grades[grade]+'! Lesson Passed' : 'Lesson Not Passed';
+  verdictEl.className = 'result-verdict '+(didPass?'pass':'fail');
+  document.getElementById('rtagline-'+n).textContent = taglines[grade];
+
+  // Tier badge
+  const tierEl = document.getElementById('rtier-'+n);
+  if(tierEl){ tierEl.className='result-tier '+tier.cls; tierEl.textContent=tier.icon+' '+tier.label; }
+
+  document.getElementById('rcorrect-'+n).textContent = correct;
+  document.getElementById('rwrong-'+n).textContent = wrong;
+  document.getElementById('rpct-'+n).textContent = pct+'%';
+
+  // Time stat
+  const timeEl = document.getElementById('rtime-'+n);
+  if(timeEl) timeEl.textContent = timeStr;
+
+  // Gauge bar
+  const gaugeFill = document.getElementById('rgauge-'+n);
+  if(gaugeFill){
+    gaugeFill.className = 'result-gauge-fill '+(didPass?'pass':'fail');
+    setTimeout(()=>{ gaugeFill.style.width = pct+'%'; }, 100);
+  }
+
+  let bHtml = '';
+  breakdown.forEach((b,i)=>{
+    bHtml += '<div class="breakdown-row '+(b.correct?'c':'w')+'">'
+      +'<span class="breakdown-idx">Q'+(i+1)+'</span>'
+      +'<span class="breakdown-q">'+b.q+'</span>'
+      +'<span class="breakdown-tick '+(b.correct?'c':'w')+'">'+(b.correct?'✓':'✗')+'</span>'
+      +'</div>';
+  });
+  document.getElementById('rbreakdown-'+n).innerHTML = bHtml;
+
+  document.getElementById('rneedmore-'+n).style.display = didPass?'none':'block';
+  document.getElementById('btn-retry-'+n).style.display = didPass?'none':'inline-flex';
+  const isLast = n === TOTAL;
+  document.getElementById('btn-next-'+n).style.display = (didPass && !isLast)?'inline-flex':'none';
+  document.getElementById('btn-cert-'+n).style.display = (didPass && isLast)?'inline-flex':'none';
+
+  if(didPass){
+    setLessonState(n,'passed');
+    if(!isLast) setLessonState(n+1,'unlocked');
+    updateOverall();
+    if(isLast) document.getElementById('cert-cta-box').classList.add('show');
+  } else {
+    setLessonState(n,'failed');
+  }
+}
+
+function retryTest(n){
+  document.getElementById('result-'+n).style.display='none';
+  openTest(n);
+}
+
+function nextLesson(n){
+  document.getElementById('result-'+n).style.display='none';
+  document.getElementById('body-'+n).style.display='none';
+  document.getElementById('chev-'+n).classList.remove('open');
+  if(n<TOTAL){
+    toggleLesson(n+1);
+    document.getElementById('lesson-'+(n+1)).scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+
+function updateOverall(){
+  const count = passed.filter(Boolean).length;
+  document.getElementById('overall-score').textContent = count+' / '+TOTAL+' Passed';
+  document.getElementById('overall-fill').style.width = (count/TOTAL*100)+'%';
+}
+
+function startTimer(n, secs){
+  clearInterval(timers[n]);
+  let remaining = secs;
+  let elapsed = 0;
+  const el = document.getElementById('test-timer-'+n);
+  function tick(){
+    const m = Math.floor(remaining/60);
+    const s = remaining%60;
+    if(el) el.textContent='⏱ '+m+':'+(s<10?'0':'')+s;
+    timers[n+"_elapsed"] = secs - remaining;
+    if(remaining<=0){clearInterval(timers[n]);submitTest(n);}
+    remaining--; elapsed++;
+  }
+  tick();
+  timers[n] = setInterval(tick,1000);
+}
+
+toggleLesson(1);
+</script>
+</body>
+</html>
