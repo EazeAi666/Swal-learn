@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Intelligence M3 — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* Professional Dark Theme with Emerald Accent for OOP */
+    :root {
+      --bg: #060810; --border: #1a2235; --accent: #00e676; --accent2: #4facfe; 
+      --text: #e8edf5; --muted: #5a6a80; --card: #0f1520; --code-bg: #010409;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; padding-bottom: 5rem; }
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}
+    .nav-logo span{color:var(--accent)}
+    .hero { text-align: center; padding: 4rem 2rem; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(0, 230, 118, 0.05), transparent); }
+    .step-badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: #000; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; }
+    .lesson-section { max-width: 850px; margin: 4rem auto; padding: 0 2rem; }
+    .lesson-title { font-size: 2.2rem; font-weight: 800; color: var(--accent); margin-bottom: 1rem; }
+    .ai-thought { border-left: 3px solid var(--accent); background: rgba(0, 230, 118, 0.05); padding: 1.5rem; margin: 2rem 0; border-radius: 0 12px 12px 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; font-family: 'DM Mono', monospace; color: #a5f3bc; margin: 1.5rem 0; overflow-x: auto; white-space: pre; }
+    .btn-next { display: block; width: 100%; padding: 1.2rem; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: #000; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>Learn</span></a>
+  <div style="font-family: 'DM Mono'; font-size: 0.7rem; color: var(--muted);">MODULE_03 // OBJECT_ORIENTED_LOGIC</div>
+</nav>
+
+<div class="hero">
+  <div class="step-badge">Advanced Foundations</div>
+  <h1>OOP & <em>Blueprints</em></h1>
+  <p style="color: var(--muted); font-family: 'DM Mono'; max-width: 600px; margin: 0 auto;">Module 3: Building complex systems using Classes, Objects, and Inheritance.</p>
+</div>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: CLASS_STRUCTURE</div>
+  <h2 class="lesson-title">21 // Classes: The Blueprint</h2>
+  <p>Think of a <strong>Class</strong> as the architectural drawing of a house, and an <strong>Object</strong> as the actual house built from that drawing.</p>
+  
+  <div class="code-block">
+class UserAccount:
+    def __init__(self, username, balance):
+        self.username = username
+        self.balance = balance
+
+    def deposit(self, amount):
+        self.balance += amount
+        print(f"New Balance: {self.balance}")
+
+# Creating an Object (Instance)
+user1 = UserAccount("VisualEaze", 5000)
+user1.deposit(1000)
+  </div>
+  
+  <div class="ai-thought">
+    <strong>AI Insight:</strong> <code>__init__</code> is a "Constructor." It's the first thing that runs when you create an object. It sets the starting state of your data.
+  </div>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: OOP_PILLARS</div>
+  <h2 class="lesson-title">22-25 // The Pillars of OOP</h2>
+  <p><strong>Lesson 22: Inheritance</strong> — Creating a "Child" class that takes features from a "Parent" class.</p>
+  <p><strong>Lesson 23: Encapsulation</strong> — Keeping data safe and hidden inside an object so it can't be accidentally changed.</p>
+  <p><strong>Lesson 24: Polymorphism</strong> — Allowing different classes to use the same function name but perform different actions.</p>
+  <p><strong>Lesson 25: Abstraction</strong> — Hiding the complex background details and only showing the essential features to the user.</p>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: DEEP_LOGIC</div>
+  <h2 class="lesson-title">26-30 // Dunder Methods & Decortators</h2>
+  <p>In these lessons, we explore "Magic Methods" (like <code>__str__</code>) and "Decorators" (like <code>@property</code>) which allow you to change how Python functions behave.</p>
+
+  <div class="template-box" style="border:1px solid var(--border); padding: 1.5rem; border-radius:12px; margin-top: 2rem;">
+    <h3 style="color:var(--accent2); margin-bottom: 0.5rem;">🏆 Module 3 Capstone: The Brand Manager</h3>
+    <p>Build a Class called <code>VisualStudio</code>. It should track project names, client names, and a "Budget" variable that is hidden (Encapsulated) so only the manager can see it.</p>
+  </div>
+</section>
+
+<section class="lesson-section">
+  <a href="python-module-4.html" class="btn-next">START MODULE 04: APIs & WEB →</a>
+</section>
+
+</body>
+</html>
