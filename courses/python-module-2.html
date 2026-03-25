@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Intelligence M2 — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #060810; --border: #1a2235; --accent: #8A2BE2; --accent2: #4facfe; 
+      --text: #e8edf5; --muted: #5a6a80; --card: #0f1520; --code-bg: #010409;
+      --success: #00e676;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; padding-bottom: 5rem; }
+    
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}
+    .nav-logo span{color:var(--accent)}
+
+    .hero { text-align: center; padding: 4rem 2rem; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(138, 43, 226, 0.05), transparent); }
+    .step-badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: #fff; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; }
+    
+    .lesson-section { max-width: 850px; margin: 4rem auto; padding: 0 2rem; }
+    .lesson-title { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; color: var(--accent); margin-bottom: 1rem; }
+    
+    .ai-thought { border-left: 3px solid var(--accent); background: rgba(138, 43, 226, 0.05); padding: 1.5rem; margin: 2rem 0; border-radius: 0 12px 12px 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; font-family: 'DM Mono', monospace; color: #b392f0; margin: 1.5rem 0; overflow-x: auto; white-space: pre; }
+    
+    .africa-box { border: 1px solid var(--border); padding: 1.2rem; margin: 2rem 0; border-radius: 12px; background: rgba(255,255,255,0.02); font-size: 0.9rem; }
+    .africa-title { color: var(--accent2); font-weight: 800; display: block; margin-bottom: 0.5rem; }
+
+    .btn-next { display: block; width: 100%; padding: 1.2rem; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 4rem 0; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>Learn</span></a>
+  <div style="font-family: 'DM Mono'; font-size: 0.7rem; color: var(--muted);">MODULE_02 // DATA_MASTERY</div>
+</nav>
+
+<div class="hero">
+  <div class="step-badge">Intermediate Python</div>
+  <h1>Data & <em>File Systems</em></h1>
+  <p style="color: var(--muted); font-family: 'DM Mono'; max-width: 600px; margin: 0 auto;">Module 2: Moving from variables to permanent storage and advanced data manipulation.</p>
+</div>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: FILE_IO</div>
+  <h2 class="lesson-title">11 // File Handling: Permanent Memory</h2>
+  <p>Variables vanish when a program closes. To keep data forever, we must write to files. We use the <code>with</code> statement for safe handling.</p>
+  <div class="code-block">
+# Writing to a text file
+with open("database.txt", "w") as file:
+    file.write("User_ID: 001\nStatus: Active")
+
+# Reading from a file
+with open("database.txt", "r") as file:
+    content = file.read()
+    print(content)
+  </div>
+  <div class="ai-thought"><strong>AI Insight:</strong> Using 'with' is a Pythonic best practice. It automatically closes the file for you, even if the code crashes, preventing memory corruption.</div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: LIST_COMPREHENSION</div>
+  <h2 class="lesson-title">12 // List Comprehensions</h2>
+  <p>A powerful, one-line way to create lists. This is a signature feature of advanced Python developers.</p>
+  <div class="code-block">
+# Traditional Way
+numbers = [1, 2, 3, 4]
+squares = []
+for n in numbers:
+    squares.append(n * n)
+
+# Pythonic Way (List Comprehension)
+squares = [n * n for n in numbers]
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: STRING_METHODS</div>
+  <h2 class="lesson-title">13 // Advanced String Manipulation</h2>
+  <p>Cleaning and formatting data for reports or user interfaces using <code>.strip()</code>, <code>.split()</code>, and <code>.join()</code>.</p>
+  <div class="code-block">
+raw_data = "  Lagos, Nigeria  "
+clean_data = raw_data.strip().upper() 
+# Result: "LAGOS, NIGERIA"
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: TIME_MODULE</div>
+  <h2 class="lesson-title">14 // Working with Time</h2>
+  <p>Using the <code>datetime</code> module to track logs, timestamps, and transaction histories.</p>
+  <div class="code-block">
+from datetime import datetime
+now = datetime.now()
+print(f"Current Timestamp: {now.strftime('%Y-%m-%d %H:%M')}")
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: INTERMEDIATE_CONCEPTS</div>
+  <h2 class="lesson-title">15-19 // Memory & Data Integrity</h2>
+  <p><strong>Lesson 15:</strong> <code>*args</code> and <code>**kwargs</code> — Handling dynamic numbers of function inputs.</p>
+  <p><strong>Lesson 16:</strong> Lambda Functions — Writing anonymous, one-line functions for logic tasks.</p>
+  <p><strong>Lesson 17:</strong> Set & FrozenSet — Handling unique data entries (no duplicates allowed).</p>
+  <p><strong>Lesson 18:</strong> Deep Copy vs. Shallow Copy — Managing how Python copies data objects in memory.</p>
+  <p><strong>Lesson 19:</strong> Recursion — Functions that call themselves to solve complex mathematical patterns.</p>
+</section>
+
+<hr>
+
+<section class="lesson-section" style="background: rgba(138, 43, 226, 0.03); padding: 3rem 2rem; border-radius: 20px;">
+  <div class="step-badge" style="background: var(--success); color: #000;">CAPSTONE_PROJECT_02</div>
+  <h2 class="lesson-title">20 // Project: The Secure Logger</h2>
+  <p>Build a system that takes user input, sanitizes the text, and saves it to a permanent file with a timestamp.</p>
+  
+  <div class="africa-box">
+    <span class="africa-title">🌍 MARKET APPLICATION</span>
+    In the African market, local businesses need "Lightweight CRM" systems. This project is the foundation for a tool that tracks customer sales without needing a heavy, expensive database.
+  </div>
+
+  <a href="python-module-3.html" class="btn-next">START MODULE 03: OBJECTS & CLASSES →</a>
+</section>
+
+</body>
+</html>
