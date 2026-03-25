@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Intelligence M4 — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* Tech-Blue & Electric Pink Theme for Web/API */
+    :root {
+      --bg: #060810; --border: #1a2235; --accent: #ff007f; --accent2: #4facfe; 
+      --text: #e8edf5; --muted: #5a6a80; --card: #0f1520; --code-bg: #010409;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; padding-bottom: 5rem; }
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}
+    .nav-logo span{color:var(--accent)}
+    .hero { text-align: center; padding: 4rem 2rem; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(255, 0, 127, 0.05), transparent); }
+    .step-badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: #fff; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; }
+    .lesson-section { max-width: 850px; margin: 4rem auto; padding: 0 2rem; }
+    .lesson-title { font-size: 2.2rem; font-weight: 800; color: var(--accent); margin-bottom: 1rem; }
+    .ai-thought { border-left: 3px solid var(--accent); background: rgba(255, 0, 127, 0.05); padding: 1.5rem; margin: 2rem 0; border-radius: 0 12px 12px 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; font-family: 'DM Mono', monospace; color: #ff80bf; margin: 1.5rem 0; overflow-x: auto; white-space: pre; }
+    .btn-next { display: block; width: 100%; padding: 1.2rem; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>Learn</span></a>
+  <div style="font-family: 'DM Mono'; font-size: 0.7rem; color: var(--muted);">MODULE_04 // WEB_INTEGRATION</div>
+</nav>
+
+<div class="hero">
+  <div class="step-badge">Network Engineering</div>
+  <h1>APIs & <em>The Web</em></h1>
+  <p style="color: var(--muted); font-family: 'DM Mono'; max-width: 600px; margin: 0 auto;">Module 4: Connecting your Python logic to real-world data across the internet.</p>
+</div>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: HTTP_PROTOCOL</div>
+  <h2 class="lesson-title">31 // The Request/Response Cycle</h2>
+  <p>The internet is just a conversation. Your Python code (The Client) asks for something, and a Server sends it back.</p>
+  
+  <div class="ai-thought">
+    <strong>AI Insight:</strong> 
+    - <strong>GET:</strong> Asking for data (e.g., Reading a tweet).
+    - <strong>POST:</strong> Sending data (e.g., Submitting a password).
+    - <strong>Status 200:</strong> Success!
+    - <strong>Status 404:</strong> Not Found.
+  </div>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: REQUESTS_LIB</div>
+  <h2 class="lesson-title">32 // The Requests Library</h2>
+  <p>Python's most powerful tool for talking to the web. We use it to pull data from any URL.</p>
+  
+  <div class="code-block">
+import requests
+
+response = requests.get("https://api.github.com/users/EazeAi666")
+data = response.json()
+
+print(f"Followers: {data['followers']}")
+  </div>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: WEB_DATA</div>
+  <h2 class="lesson-title">33-39 // Parsing & Scoping</h2>
+  <p><strong>Lesson 33: JSON Mastery</strong> — Navigating complex nested dictionaries from APIs.</p>
+  <p><strong>Lesson 34: API Keys</strong> — Learning how to hide your secret passwords using Environment Variables.</p>
+  <p><strong>Lesson 35: Rate Limiting</strong> — How to avoid getting banned by servers for asking for too much data too fast.</p>
+  <p><strong>Lesson 36-39: Introduction to Flask</strong> — Briefly touching on how to build your OWN server using Python.</p>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section" style="background: rgba(255, 0, 127, 0.03); padding: 3rem 2rem; border-radius: 20px;">
+  <div class="step-badge" style="background: var(--accent2); color: #fff;">CAPSTONE_PROJECT_04</div>
+  <h2 class="lesson-title">40 // Project: Real-Time Weather Agent</h2>
+  <p>Build a tool that asks the user for a city (e.g., "Lagos"), connects to a Weather API, and prints the current temperature and humidity.</p>
+  
+  <div class="africa-box">
+    <span class="africa-title">🌍 MARKET APPLICATION</span>
+    Agriculture and Logistics companies in Nigeria use these exact API systems to track weather patterns and optimize delivery routes. You are now building tools that solve regional problems.
+  </div>
+
+  <a href="python-module-5.html" class="btn-next">START MODULE 05: DATA SCIENCE & AUTOMATION →</a>
+</section>
+
+</body>
+</html>
+
