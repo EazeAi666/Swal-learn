@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>English for IT M2 — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* Dark Slate & Teal Theme for Documentation */
+    :root {
+      --bg: #060810; --border: #1a2235; --accent: #20c997; --accent2: #007bff; 
+      --text: #e8edf5; --muted: #5a6a80; --card: #0f1520;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; padding-bottom: 5rem; }
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}
+    .nav-logo span{color: var(--accent);}
+    .hero { text-align: center; padding: 4rem 2rem; border-bottom: 1px solid var(--border); background: rgba(32, 201, 151, 0.05); }
+    .step-badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: #000; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; }
+    .lesson-section { max-width: 850px; margin: 4rem auto; padding: 0 2rem; }
+    .lesson-title { font-size: 2.2rem; font-weight: 800; color: var(--accent); margin-bottom: 1rem; }
+    .doc-box { background: var(--card); border: 1px dashed var(--accent); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; font-family: 'DM Mono'; font-size: 0.85rem; }
+    .btn-next { display: block; width: 100%; padding: 1.2rem; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: #fff; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>English</span></a>
+  <div style="font-family: 'DM Mono'; font-size: 0.7rem; color: var(--muted);">MODULE_02 // TECH_WRITING</div>
+</nav>
+
+<div class="hero">
+  <div class="step-badge">Technical Writing</div>
+  <h1>Precision <em>Documentation</em></h1>
+  <p style="color: var(--muted); font-family: 'DM Mono'; max-width: 600px; margin: 0 auto;">Module 2: Learning to write clear instructions and reports that global teams can follow.</p>
+</div>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: BUG_REPORTING</div>
+  <h2 class="lesson-title">11 // The Anatomy of a Bug Report</h2>
+  <p>When reporting a technical error, you must be precise. Avoid saying "It's broken." Instead, use the <strong>Expected vs. Actual</strong> result format.</p>
+  
+  <div class="doc-box">
+    <strong>[BUG] Login Page Timeout</strong><br><br>
+    <strong>Steps to Reproduce:</strong> Click 'Login' on mobile.<br>
+    <strong>Expected Result:</strong> User dashboard opens.<br>
+    <strong>Actual Result:</strong> Screen stays white for 10 seconds.
+  </div>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: HOW_TO_GUIDES</div>
+  <h2 class="lesson-title">12-15 // Writing Steps & Procedures</h2>
+  <p>Mastering the "Imperative" mood (Command words). Professional documentation uses direct verbs.</p>
+  <ul>
+    <li><strong>Good:</strong> "Open the terminal and type the command."</li>
+    <li><strong>Bad:</strong> "You should maybe try to open the terminal if you can."</li>
+  </ul>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: GLOSSARY_BUILDING</div>
+  <h2 class="lesson-title">16-19 // Common Tech Slang & Idioms</h2>
+  <p>Learning phrases used in Silicon Valley and London tech hubs:</p>
+  <ul>
+    <li><strong>"On the same page":</strong> To have the same understanding.</li>
+    <li><strong>"Bandwidth":</strong> Having the time/mental space to do a task.</li>
+    <li><strong>"Deep dive":</strong> A thorough investigation into a problem.</li>
+  </ul>
+</section>
+
+<section class="lesson-section" style="background: rgba(32, 201, 151, 0.03); padding: 3rem 2rem; border-radius: 20px;">
+  <div class="step-badge" style="background: var(--accent2); color: #fff;">CAPSTONE_PROJECT_ENG_02</div>
+  <h2 class="lesson-title">20 // Project: The README Draft</h2>
+  <p>Write a "Installation" section for a fake Python project. Use at least 3 direct command verbs (Download, Extract, Run).</p>
+
+  <a href="english-it-module-3.html" class="btn-next" style="margin-top: 2rem;">START FINAL MODULE: THE TECH INTERVIEW →</a>
+</section>
+
+</body>
+</html>
+
