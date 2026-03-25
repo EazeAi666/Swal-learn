@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Intelligence M1 — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #060810; --border: #1a2235; --accent: #4facfe; --accent2: #00f2fe; 
+      --text: #e8edf5; --muted: #5a6a80; --card: #0f1520; --code-bg: #010409;
+      --success: #00e676;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; padding-bottom: 5rem; }
+    
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}
+    .nav-logo span{color:var(--accent)}
+
+    .hero { text-align: center; padding: 4rem 2rem; border-bottom: 1px solid var(--border); }
+    .step-badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: var(--bg); border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; }
+    
+    .lesson-section { max-width: 850px; margin: 4rem auto; padding: 0 2rem; }
+    .lesson-title { font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; color: var(--accent); margin-bottom: 1rem; }
+    
+    .ai-thought { border-left: 3px solid var(--accent); background: rgba(79, 172, 254, 0.05); padding: 1.5rem; margin: 2rem 0; border-radius: 0 12px 12px 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; font-family: 'DM Mono', monospace; color: #79c0ff; margin: 1.5rem 0; overflow-x: auto; white-space: pre; }
+    
+    .africa-box { border: 1px solid var(--border); padding: 1.2rem; margin: 2rem 0; border-radius: 12px; background: rgba(255,255,255,0.02); font-size: 0.9rem; }
+    .africa-title { color: var(--accent2); font-weight: 800; display: block; margin-bottom: 0.5rem; }
+
+    .template-box { background: rgba(0, 242, 254, 0.03); border: 1px dashed var(--accent2); padding: 1.5rem; border-radius: 12px; margin: 2rem 0; }
+    .template-title { font-size: 0.75rem; font-weight: 800; color: var(--accent2); margin-bottom: 0.8rem; letter-spacing: 0.1em; }
+
+    .quiz-container { border: 1px solid var(--border); padding: 2rem; border-radius: 16px; background: var(--card); margin-top: 3rem; }
+    .q-option { padding: 12px; border: 1px solid var(--border); margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-family: 'DM Mono'; font-size: 0.85rem; }
+    .q-option:hover { border-color: var(--accent); background: rgba(79, 172, 254, 0.05); }
+
+    hr { border: 0; border-top: 1px solid var(--border); margin: 4rem 0; }
+    .btn-next { display: block; width: 100%; padding: 1.2rem; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: var(--bg); font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>Learn</span></a>
+  <div style="font-family: 'DM Mono'; font-size: 0.7rem; color: var(--muted);">MODULE_01 // FOUNDATIONS</div>
+</nav>
+
+<div class="hero">
+  <div class="step-badge">Track 01: Python Developer</div>
+  <h1>The Pythonic <em>Architecture</em></h1>
+  <p style="color: var(--muted); font-family: 'DM Mono'; max-width: 600px; margin: 0 auto;">60-Lesson Intensive. Module 1: Mastering logic, variables, and the flow of information.</p>
+</div>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: CORE_SYNTAX</div>
+  <h2 class="lesson-title">01 // The Skeleton of Python</h2>
+  <p>Python prioritizes human readability. In this language, <strong>Indentation</strong> is not just for style; it is the law of the code block.</p>
+  <div class="code-block">
+# Valid Python Code
+if True:
+    print("This is indented and valid.")
+  </div>
+  <div class="ai-thought"><strong>AI Insight:</strong> Most languages use {curly braces}. Python uses empty space. This forces you to write clean, organized code from day one.</div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: MEMORY_MGMT</div>
+  <h2 class="lesson-title">02 // Dynamic Typing & Variables</h2>
+  <p>Python is "Dynamically Typed." You don't need to define if a variable is a number or text; the interpreter figures it out instantly.</p>
+  <div class="code-block">
+age = 25          # Integer
+price = 99.99     # Float
+name = "Eaze"     # String
+is_coding = True  # Boolean
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: DATA_STRUCTURES</div>
+  <h2 class="lesson-title">03 // Collections: Lists & Tuples</h2>
+  <p>Managing groups of data. Lists are <strong>Mutable</strong> (can change), while Tuples are <strong>Immutable</strong> (fixed).</p>
+  <div class="code-block">
+apps = ["Kuda", "Opay"]  # List
+apps.append("Palmpay")
+
+coords = (6.52, 3.37)    # Tuple (Lagos)
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: LOGIC_ENGINE</div>
+  <h2 class="lesson-title">04 // Logical Gateways</h2>
+  <p>Control flow using <code>if</code>, <code>elif</code>, and <code>else</code>. This is the decision-making heart of your app.</p>
+  <div class="code-block">
+balance = 1000
+if balance > 500:
+    print("Transaction Approved")
+else:
+    print("Insufficient Funds")
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: ITERATION</div>
+  <h2 class="lesson-title">05 // Loops: For & While</h2>
+  <p>Automation means doing a task 1,000 times without typing 1,000 lines.</p>
+  <div class="code-block">
+for i in range(5):
+    print(f"Loop iteration: {i}")
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: DATA_MAPPING</div>
+  <h2 class="lesson-title">06 // Dictionaries</h2>
+  <p>Key-Value pairs. This is the format of the modern web (JSON).</p>
+  <div class="code-block">
+user = {"id": 1, "role": "admin"}
+print(user["role"])
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: REUSABILITY</div>
+  <h2 class="lesson-title">07 // Functions & Return Values</h2>
+  <p>Building reusable tools so you never have to write the same logic twice.</p>
+  <div class="code-block">
+def greet(name):
+    return f"Welcome, {name}"
+
+print(greet("Developer"))
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: SCOPE_LOGIC</div>
+  <h2 class="lesson-title">08 // Variable Scope</h2>
+  <p>Understanding Global vs. Local memory. What happens in a function, stays in a function.</p>
+</section>
+
+<hr>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: RESILIENCE</div>
+  <h2 class="lesson-title">09 // Error Handling (Try/Except)</h2>
+  <p>How to keep your app from crashing when a user enters bad data.</p>
+  <div class="code-block">
+try:
+    x = 10 / 0
+except ZeroDivisionError:
+    print("Critical: Cannot divide by zero.")
+  </div>
+</section>
+
+<hr>
+
+<section class="lesson-section" style="background: rgba(79, 172, 254, 0.03); padding: 3rem 2rem; border-radius: 20px;">
+  <div class="step-badge" style="background: var(--success); color: #000;">CAPSTONE_PROJECT</div>
+  <h2 class="lesson-title">10 // Project: The Logic Gate ATM</h2>
+  <p>Combine loops, functions, dictionaries, and error handling into a functional ATM simulation script.</p>
+  
+  <div class="template-box">
+    <div class="template-title">PROJECT SPECS</div>
+    <div style="font-family: 'DM Mono'; font-size: 0.85rem;">
+      - Store user balance in a Dictionary.<br>
+      - Create a function for withdrawals.<br>
+      - Use a while loop for the main menu.<br>
+      - Use try/except for invalid inputs.
+    </div>
+  </div>
+
+  <div class="africa-box">
+    <span class="africa-title">🌍 CONGRATULATIONS</span>
+    You have completed the Foundation Module. This is the DNA of every AI agent and Fintech tool built in Africa today.
+  </div>
+
+  <a href="python-module-2.html" class="btn-next">START MODULE 02 →</a>
+</section>
+
+</body>
+  </html>
