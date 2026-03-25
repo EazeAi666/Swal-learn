@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Intelligence M5 — SWAL Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* Data Science Theme: Deep Amber & Gold */
+    :root {
+      --bg: #060810; --border: #1a2235; --accent: #f7c948; --accent2: #ff9800; 
+      --text: #e8edf5; --muted: #5a6a80; --card: #0f1520; --code-bg: #010409;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.6; padding-bottom: 5rem; }
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(6,8,16,.95);backdrop-filter:blur(16px)}
+    .nav-logo{font-size:1.1rem;font-weight:800;text-decoration:none;color:var(--text)}
+    .nav-logo span{color:var(--accent)}
+    .hero { text-align: center; padding: 4rem 2rem; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, rgba(247, 201, 72, 0.05), transparent); }
+    .step-badge { display: inline-block; padding: 4px 12px; background: var(--accent); color: #000; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-bottom: 1rem; text-transform: uppercase; }
+    .lesson-section { max-width: 850px; margin: 4rem auto; padding: 0 2rem; }
+    .lesson-title { font-size: 2.2rem; font-weight: 800; color: var(--accent); margin-bottom: 1rem; }
+    .ai-thought { border-left: 3px solid var(--accent); background: rgba(247, 201, 72, 0.05); padding: 1.5rem; margin: 2rem 0; border-radius: 0 12px 12px 0; font-family: 'DM Mono', monospace; font-size: 0.9rem; }
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; font-family: 'DM Mono', monospace; color: #fce588; margin: 1.5rem 0; overflow-x: auto; white-space: pre; }
+    .btn-next { display: block; width: 100%; padding: 1.2rem; background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: #000; font-weight: 800; font-size: 1rem; cursor: pointer; text-decoration: none; text-align: center; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SWAL<span>Learn</span></a>
+  <div style="font-family: 'DM Mono'; font-size: 0.7rem; color: var(--muted);">MODULE_05 // DATA_SCIENCE_BASICS</div>
+</nav>
+
+<div class="hero">
+  <div class="step-badge">Analytical Engineering</div>
+  <h1>Data & <em>Automation</em></h1>
+  <p style="color: var(--muted); font-family: 'DM Mono'; max-width: 600px; margin: 0 auto;">Module 5: Processing large datasets and automating repetitive workflows.</p>
+</div>
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: CSV_PROCESSING</div>
+  <h2 class="lesson-title">41 // Handling CSV Data</h2>
+  <p>Most business data (Sales, User Lists, Logistics) is stored in CSV files. Python's built-in <code>csv</code> module allows us to read thousands of rows in seconds.</p>
+  
+  <div class="code-block">
+import csv
+
+with open('sales.csv', mode='r') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        print(f"Product: {row['item']} | Price: {row['price']}")
+  </div>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section">
+  <div class="step-badge">SYSTEM: ANALYSIS_TOOLS</div>
+  <h2 class="lesson-title">42-49 // Statistics & Patterns</h2>
+  <p><strong>Lesson 42: Math & Stats</strong> — Using the <code>statistics</code> module for averages and trends.</p>
+  <p><strong>Lesson 43: List Filtering</strong> — Using <code>filter()</code> and <code>map()</code> to clean messy data.</p>
+  <p><strong>Lesson 44: Introduction to NumPy</strong> — Understanding high-speed numerical arrays.</p>
+  <p><strong>Lesson 45: Introduction to Pandas</strong> — The industry standard for Dataframes.</p>
+</section>
+
+<hr style="border:0; border-top:1px solid var(--border); margin: 4rem 0;">
+
+<section class="lesson-section" style="background: rgba(247, 201, 72, 0.03); padding: 3rem 2rem; border-radius: 20px;">
+  <div class="step-badge" style="background: var(--accent2); color: #000;">CAPSTONE_PROJECT_05</div>
+  <h2 class="lesson-title">50 // Project: The Automated Sales Auditor</h2>
+  <p>Create a script that reads a list of transactions, calculates the total revenue, and identifies the most expensive item sold.</p>
+  
+  <div class="ai-thought">
+    <strong>Market insight:</strong> This is the foundation of "Business Intelligence." Companies pay premium rates for developers who can turn raw data into readable profit reports.
+  </div>
+
+  <a href="python-module-6.html" class="btn-next">START FINAL MODULE: SYSTEM DEPLOYMENT →</a>
+</section>
+
+</body>
+</html>
+
