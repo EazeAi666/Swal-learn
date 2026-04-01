@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Certificate - SWAL Learn</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+            font-family: 'Lato', sans-serif;
+            padding: 20px;
+        }
+        
+        .certificate {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            aspect-ratio: 1.4;
+            background: white;
+            border: 15px solid #667eea;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px solid #764ba2;
+            pointer-events: none;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #667eea;
+            font-size: 3.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #764ba2;
+            font-size: 1.2em;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        
+        .recipient {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #333;
+            margin: 30px 0;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+            padding-bottom: 10px;
+            min-width: 300px;
+        }
+        
+        .course-name {
+            font-size: 1.6em;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+        
+        .description {
+            color: #666;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        
+        .date {
+            margin-top: 40px;
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .signature {
+            margin-top: 50px;
+            font-style: italic;
+            color: #764ba2;
+        }
+        
+        .signature p:first-child {
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+        
+        .seal {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5em;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .logo {
+            position: absolute;
+            bottom: 50px;
+            right: 60px;
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: 700;
+        }
+        
+        .no-print {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover { background: #5a6fd6; }
+        
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #dc3545;
+        }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            .certificate { 
+                box-shadow: none; 
+                border-width: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .certificate { padding: 30px; }
+            h1 { font-size: 2em; }
+            .recipient { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="certificate">
+            <div class="subtitle">Certificate of Completion</div>
+            <h1>SWAL Learn</h1>
+            
+            <p class="description">This certifies that</p>
+            
+            <div class="recipient" id="student-name">Student Name</div>
+            
+            <p class="description">has successfully completed</p>
+            
+            <div class="course-name" id="course-name">Course Name</div>
+            
+            <p class="description">demonstrating proficiency in all required modules and assessments</p>
+            
+            <div class="date" id="date">Date</div>
+            
+            <div class="signature">
+                <p>SWAL Organization</p>
+                <p>Shaping Worlds through AI & Learning</p>
+            </div>
+            
+            <div class="seal">✓</div>
+            <div class="logo">🎓 SWAL</div>
+        </div>
+    </div>
+    
+    <div class="no-print">
+        <button onclick="window.print()">🖨️ Print Certificate</button>
+        <button onclick="window.location.href='index.html'" style="background: #28a745;">🏠 Home</button>
+    </div>
+
+    <script>
+        // Get data from URL
+        const params = new URLSearchParams(window.location.search);
+        const course = params.get('course') || 'Course';
+        const urlName = params.get('name');
+        
+        // Get student data
+        const user = JSON.parse(localStorage.getItem('swal_user') || '{}');
+        const studentName = urlName || user.name || 'Student';
+        
+        // Verify completion (optional security check)
+        const courseKey = course.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const progress = JSON.parse(localStorage.getItem(`swal_progress_${user.uid}`) || '{}');
+        
+        // Fill certificate
+        document.getElementById('student-name').textContent = studentName;
+        document.getElementById('course-name').textContent = course;
+        document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Optional: Show warning if not completed
+        if (user.uid && progress[courseKey] && Object.keys(progress[courseKey]).length === 0) {
+            console.warn('Course may not be completed');
+        }
+    </script>
+</body>
+</html>
+
