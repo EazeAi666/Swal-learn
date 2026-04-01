@@ -6,58 +6,129 @@
     <title>SWAL Learn - Free AI Courses</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 40px 20px;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        h1 { 
+            color: white; 
+            text-align: center; 
+            margin-bottom: 10px; 
+            font-size: 2.5em; 
         }
-        h1 {
-            color: white;
+        
+        .subtitle { 
+            color: rgba(255,255,255,0.9); 
+            text-align: center; 
+            margin-bottom: 30px; 
+        }
+        
+        /* Auth Box */
+        .auth-box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.5em;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .subtitle {
-            color: rgba(255,255,255,0.9);
+        
+        #user-info { display: none; align-items: center; justify-content: center; gap: 15px; }
+        
+        #user-photo {
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+        }
+        
+        .login-btn {
+            background: #4285f4; 
+            color: white; 
+            border: none; 
+            padding: 15px 30px;
+            border-radius: 8px; 
+            font-size: 18px; 
+            cursor: pointer;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .login-btn:hover { background: #3367d6; }
+        
+        .logout-btn {
+            background: #dc3545; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px;
+            border-radius: 6px; 
+            cursor: pointer;
+        }
+        
+        /* Locked Message */
+        .locked-message {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 40px;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            color: #333;
         }
+        
+        .locked-message h3 { 
+            color: #667eea; 
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        /* Course Grid */
         .course-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            opacity: 0.3;
+            pointer-events: none;
+            filter: blur(3px);
+            transition: all 0.3s;
         }
+        
+        .course-grid.unlocked {
+            opacity: 1;
+            pointer-events: auto;
+            filter: none;
+        }
+        
         .course-card {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 30px;
             text-decoration: none;
             color: #333;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        
         .course-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
-        .course-icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
+        
+        .course-icon { font-size: 3em; margin-bottom: 15px; }
+        
+        .course-title { 
+            font-size: 1.3em; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            color: #333;
         }
-        .course-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .course-desc {
-            color: #666;
-            font-size: 0.9em;
-        }
+        
+        .course-desc { color: #666; font-size: 0.95em; }
     </style>
 </head>
 <body>
@@ -65,7 +136,35 @@
         <h1>🎓 SWAL Learn</h1>
         <p class="subtitle">Free AI & Tech Courses by SWAL Organization</p>
         
-        <div class="course-grid">
+        <!-- Auth Box -->
+        <div class="auth-box">
+            <div id="login-section">
+                <h3 style="margin-bottom: 10px;">🔒 Welcome to SWAL Learn</h3>
+                <p style="color: #666; margin-bottom: 20px;">Sign in with Google to access all 14 free courses</p>
+                <button class="login-btn" onclick="signInWithGoogle()">
+                    <img src="https://www.google.com/favicon.ico" width="20" style="filter: brightness(0) invert(1);">
+                    Sign in with Google
+                </button>
+            </div>
+            
+            <div id="user-info">
+                <img id="user-photo" src="" alt="">
+                <div>
+                    <div id="user-name" style="font-weight: 700;"></div>
+                    <div style="color: #666; font-size: 0.9em;">Student</div>
+                </div>
+                <button class="logout-btn" onclick="signOut()">Logout</button>
+            </div>
+        </div>
+        
+        <!-- Locked Message -->
+        <div id="locked-msg" class="locked-message">
+            <h3>🔐 Courses Locked</h3>
+            <p>Please sign in above to unlock all courses and track your progress</p>
+        </div>
+        
+        <!-- Course Grid -->
+        <div id="course-grid" class="course-grid">
             <a href="courses/ai-basics.html" class="course-card">
                 <div class="course-icon">🤖</div>
                 <div class="course-title">AI Basics</div>
@@ -123,7 +222,7 @@
             <a href="courses/python-module-2.html" class="course-card">
                 <div class="course-icon">🐍</div>
                 <div class="course-title">Python Module 2</div>
-                <div class="course-desc">Python functions & loops</div>
+                <div class="course-desc">Functions & loops</div>
             </a>
             
             <a href="courses/python-module-3.html" class="course-card">
@@ -151,6 +250,45 @@
             </a>
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script>
+        // Simple login system (no Firebase yet)
+        function signInWithGoogle() {
+            // For now, simulate login with prompt
+            const name = prompt('Enter your name to continue:');
+            if (name && name.trim()) {
+                const user = {
+                    uid: 'user_' + Date.now(),
+                    name: name.trim(),
+                    email: name.trim() + '@student.com',
+                    photo: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name.trim()) + '&background=667eea&color=fff'
+                };
+                
+                localStorage.setItem('swal_user', JSON.stringify(user));
+                updateUI(user);
+            }
+        }
+        
+        function signOut() {
+            localStorage.removeItem('swal_user');
+            location.reload();
+        }
+        
+        function updateUI(user) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('user-info').style.display = 'flex';
+            document.getElementById('user-name').textContent = user.name;
+            document.getElementById('user-photo').src = user.photo;
+            document.getElementById('locked-msg').style.display = 'none';
+            document.getElementById('course-grid').classList.add('unlocked');
+        }
+        
+        // Check if already logged in
+        const savedUser = localStorage.getItem('swal_user');
+        if (savedUser) {
+            updateUI(JSON.parse(savedUser));
+        }
+    </script>
 </body>
 </html>
-
