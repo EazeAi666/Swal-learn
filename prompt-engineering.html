@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering - SWAL Learn</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .back-link { color: #667eea; text-decoration: none; }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        
+        .progress-section { margin-bottom: 30px; }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .progress-bar {
+            background: #333;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .module-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .module-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .module-btn.active { border-color: #667eea; color: #667eea; }
+        .module-btn.completed { background: #667eea; border-color: #667eea; color: white; }
+        .module-btn.locked { opacity: 0.3; cursor: not-allowed; }
+        
+        .module {
+            display: none;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .module.active { display: block; }
+        .module h2 { color: #667eea; margin-bottom: 20px; font-size: 1.8em; }
+        .module h3 { color: #aaa; margin: 25px 0 15px; }
+        .module p { color: #ccc; margin-bottom: 15px; }
+        
+        .example-box {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        .good { border-left: 4px solid #22c55e; }
+        .bad { border-left: 4px solid #ef4444; }
+        
+        .quiz {
+            background: #0a0a0a;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .quiz h3 { color: #667eea; margin-bottom: 20px; }
+        
+        .question { margin-bottom: 20px; }
+        .question p { color: #fff; margin-bottom: 10px; font-weight: 600; }
+        
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #1a1a1a;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .options label:hover { background: #252525; }
+        .options input { margin-right: 10px; }
+        
+        .submit-quiz {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .quiz-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .quiz-result.pass { background: #1a472a; color: #4ade80; }
+        .quiz-result.fail { background: #471a1a; color: #f87171; }
+        
+        .next-btn {
+            display: none;
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .certificate-section {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+        
+        .cert-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="../index.html" class="back-link">← All Courses</a>
+        <div class="user-info">
+            <span id="student-name">Student</span>
+        </div>
+    </div>
+    
+    <h1 style="margin-bottom: 10px;">✨ Prompt Engineering</h1>
+    <p style="color: #888; margin-bottom: 30px;">Master the art of communicating with AI</p>
+    
+    <div class="progress-section">
+        <div class="progress-text">
+            <span>Overall Progress</span>
+            <span id="progress-text">0 / 3 Completed</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+    
+    <div class="module-nav" id="module-nav">
+        <button class="module-btn active" onclick="showModule(0)">1</button>
+        <button class="module-btn locked" onclick="showModule(1)">2</button>
+        <button class="module-btn locked" onclick="showModule(2)">3</button>
+    </div>
+    
+    <!-- MODULE 1 -->
+    <div class="module active" id="module-0">
+        <h2>Module 1: What is a Prompt?</h2>
+        
+        <h3>Definition</h3>
+        <p>A prompt is the text you give to an AI to get a response. It's how you communicate your needs, questions, or tasks to the AI. The quality of your prompt directly affects the quality of the AI's response.</p>
+        
+        <h3>Why Prompt Engineering Matters</h3>
+        <p>Poor prompts give poor results. Great prompts unlock the full power of AI. Learning to write effective prompts is the most valuable skill in the AI era.</p>
+        
+        <h3>Good vs Bad Prompts</h3>
+        <p><strong>❌ Bad Prompt:</strong></p>
+        <div class="example-box bad">Write something about dogs.</div>
+        
+        <p><strong>✅ Good Prompt:</strong></p>
+        <div class="example-box good">Write a 200-word blog post about golden retrievers as family pets, including their temperament, exercise needs, and why they're great with children. Use a friendly, informative tone.</div>
+        
+        <h3>Key Elements</h3>
+        <p>• <strong>Context</strong> — Background information<br>
+        • <strong>Specificity</strong> — Clear, detailed instructions<br>
+        • <strong>Format</strong> — How you want the output<br>
+        • <strong>Tone</strong> — The style of response</p>
+        
+        <div class="quiz">
+            <h3>📝 Module 1 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. What is a prompt?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-1" value="wrong"> A computer program</label>
+                    <label><input type="radio" name="q0-1" value="correct"> The text you give to an AI to get a response</label>
+                    <label><input type="radio" name="q0-1" value="wrong"> A type of AI model</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Which prompt is better?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-2" value="wrong"> "Write about dogs"</label>
+                    <label><input type="radio" name="q0-2" value="correct"> "Write a 200-word blog post about golden retrievers as family pets, including their temperament"</label>
+                    <label><input type="radio" name="q0-2" value="wrong"> "Dogs are nice"</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. Which is NOT a key element of good prompts?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-3" value="wrong"> Context</label>
+                    <label><input type="radio" name="q0-3" value="wrong"> Specificity</label>
+                    <label><input type="radio" name="q0-3" value="correct"> Length (longer is always better)</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(0)">Submit Quiz</button>
+            <div class="quiz-result" id="result-0"></div>
+            <button class="next-btn" id="next-0" onclick="unlockNext(1)">→ Unlock Module 2</button>
+        </div>
+    </div>
+    
+    <!-- MODULE 2 -->
+    <div class="module" id="module-1">
+        <h2>Module 2: Prompt Patterns</h2>
+        
+        <h3>The Role Pattern</h3>
+        <p>Tell the AI who it is. This improves responses dramatically.</p>
+        <div class="example-box good">"You are an experienced Python tutor. Explain list comprehensions to a beginner programmer."</div>
+        
+        <h3>The Step-by-Step Pattern</h3>
+        <p>Ask the AI to break down complex tasks.</p>
+        <div class="example-box good">"Explain how to build a website. Break this down into 5 clear steps."</div>
+        
+        <h3>The Example Pattern</h3>
+        <p>Show the AI what you want with examples.</p>
+        <div class="example-box good">"Write product descriptions like this example: [insert example]. Now write one for a wireless mouse."</div>
+        
+        <h3>The Format Pattern</h3>
+        <p>Specify exactly how you want the output.</p>
+        <div class="example-box good">"Give me a meal plan in this format: Breakfast: [food], Lunch: [food], Dinner: [food]"</div>
+        
+        <div class="quiz">
+            <h3>📝 Module 2 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. What does the Role Pattern do?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-1" value="correct"> Tells the AI who it is to improve responses</label>
+                    <label><input type="radio" name="q1-1" value="wrong"> Changes the AI's programming</label>
+                    <label><input type="radio" name="q1-1" value="wrong"> Makes the prompt longer</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Which pattern asks for numbered steps?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-2" value="wrong"> Role Pattern</label>
+                    <label><input type="radio" name="q1-2" value="correct"> Step-by-Step Pattern</label>
+                    <label><input type="radio" name="q1-2" value="wrong"> Example Pattern</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. When should you use the Example Pattern?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-3" value="correct"> When you want the AI to match a specific style</label>
+                    <label><input type="radio" name="q1-3" value="wrong"> When you want random output</label>
+                    <label><input type="radio" name="q1-3" value="wrong"> When you don't know what you want</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(1)">Submit Quiz</button>
+            <div class="quiz-result" id="result-1"></div>
+            <button class="next-btn" id="next-1" onclick="unlockNext(2)">→ Unlock Module 3</button>
+        </div>
+    </div>
+    
+    <!-- MODULE 3 -->
+    <div class="module" id="module-2">
+        <h2>Module 3: Advanced Techniques</h2>
+        
+        <h3>Chain of Thought</h3>
+        <p>Ask the AI to think step-by-step. This improves reasoning and accuracy.</p>
+        <div class="example-box good">"Solve this math problem step-by-step, showing your work: If a train travels 120 km in 2 hours, how far will it travel in 5 hours at the same speed?"</div>
+        
+        <h3>Few-Shot Learning</h3>
+        <p>Give multiple examples for complex tasks.</p>
+        <div class="example-box good">"Here are 3 examples of friendly customer service responses: [examples]. Now write a response to: 'My order hasn't arrived yet.'"</div>
+        
+        <h3>Constraints & Boundaries</h3>
+        <p>Set clear limits for better results.</p>
+        <div class="example-box good">"Write a summary in exactly 3 bullet points, each under 10 words. Do not use technical jargon."</div>
+        
+        <h3>Iterative Refinement</h3>
+        <p>Start simple, then improve. Ask the AI to revise based on feedback.</p>
+        <div class="example-box good">"That's good, but make it more formal and add statistics."</div>
+        
+        <div class="quiz">
+            <h3>📝 Module 3 Quiz (Final)</h3>
+            
+            <div class="question">
+                <p>1. What is Chain of Thought prompting?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-1" value="correct"> Asking the AI to show step-by-step reasoning</label>
+                    <label><input type="radio" name="q2-1" value="wrong"> Writing very long prompts</label>
+                    <label><input type="radio" name="q2-1" value="wrong"> Using multiple AI models</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Few-Shot Learning means:</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-2" value="wrong"> Running the AI multiple times</label>
+                    <label><input type="radio" name="q2-2" value="correct"> Giving multiple examples to teach a pattern</label>
+                    <label><input type="radio" name="q2-2" value="wrong"> Using few words in prompts</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. Why set constraints in prompts?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-3" value="wrong"> To make prompts longer</label>
+                    <label><input type="radio" name="q2-3" value="correct"> To get more precise, controlled output</label>
+                    <label><input type="radio" name="q2-3" value="wrong"> To confuse the AI</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(2)">Submit Final Quiz</button>
+            <div class="quiz-result" id="result-2"></div>
+        </div>
+    </div>
+    
+    <div class="certificate-section" id="cert-section">
+        <h2>🎉 Course Completed!</h2>
+        <p>Congratulations! You've mastered Prompt Engineering.</p>
+        <a href="../certificate.html?course=Prompt%20Engineering" class="cert-btn" target="_blank">📜 Get Your Certificate</a>
+    </div>
+
+    <script src="../auth-check.js"></script>
+    <script src="../progress.js"></script>
+    <script>
+        const COURSE_ID = 'prompt-engineering';
+        const TOTAL_MODULES = 3;
+        
+        const user = JSON.parse(localStorage.getItem('swal_user') || '{}');
+        if (user.name) document.getElementById('student-name').textContent = user.name;
+        
+        function loadProgress() {
+            let completed = 0;
+            for (let i = 0; i < TOTAL_MODULES; i++) {
+                if (ProgressTracker.isUnlocked(COURSE_ID, i)) {
+                    document.querySelectorAll('.module-btn')[i].classList.add('completed');
+                    document.querySelectorAll('.module-btn')[i].classList.remove('locked');
+                    completed++;
+                    const quiz = ProgressTracker.getQuiz(COURSE_ID, `module_${i}`);
+                    if (quiz && quiz.passed && i < TOTAL_MODULES - 1) {
+                        document.getElementById(`next-${i}`).style.display = 'inline-block';
+                    }
+                }
+            }
+            const percent = (completed / TOTAL_MODULES) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `${completed} / ${TOTAL_MODULES} Completed`;
+            if (completed === TOTAL_MODULES) {
+                document.getElementById('cert-section').style.display = 'block';
+            }
+            return completed;
+        }
+        
+        function showModule(index) {
+            if (!ProgressTracker.isUnlocked(COURSE_ID, index)) {
+                alert('🔒 Complete the previous module quiz to unlock this!');
+                return;
+            }
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`module-${index}`).classList.add('active');
+            document.querySelectorAll('.module-btn')[index].classList.add('active');
+        }
+        
+        function submitQuiz(moduleIndex) {
+            const moduleDiv = document.getElementById(`module-${moduleIndex}`);
+            const questions = moduleDiv.querySelectorAll('.question');
+            let correct = 0;
+            let answered = 0;
+            
+            questions.forEach((q) => {
+                const selected = q.querySelector('input[type="radio"]:checked');
+                if (selected) {
+                    answered++;
+                    if (selected.value === 'correct') correct++;
+                }
+            });
+            
+            if (answered < questions.length) {
+                alert(`Please answer all ${questions.length} questions`);
+                return;
+            }
+            
+            const result = ProgressTracker.saveQuiz(COURSE_ID, moduleIndex, correct, questions.length);
+            const resultDiv = document.getElementById(`result-${moduleIndex}`);
+            
+            if (result.passed) {
+                resultDiv.className = 'quiz-result pass';
+                resultDiv.innerHTML = `✅ PASSED! ${correct}/${questions.length} correct.`;
+                if (moduleIndex < TOTAL_MODULES - 1) {
+                    document.getElementById(`next-${moduleIndex}`).style.display = 'inline-block';
+                }
+                document.querySelectorAll('.module-btn')[moduleIndex].classList.add('completed');
+            } else {
+                resultDiv.className = 'quiz-result fail';
+                resultDiv.innerHTML = `❌ FAILED. ${correct}/${questions.length} correct. Need 70% to pass.`;
+            }
+            resultDiv.style.display = 'block';
+            loadProgress();
+        }
+        
+        function unlockNext(nextIndex) {
+            ProgressTracker.saveModule(COURSE_ID, nextIndex);
+            document.querySelectorAll('.module-btn')[nextIndex].classList.remove('locked');
+            showModule(nextIndex);
+        }
+        
+        loadProgress();
+    </script>
+</body>
+</html>
+
