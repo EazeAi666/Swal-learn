@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building AI Apps - SWAL Learn</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .back-link { color: #667eea; text-decoration: none; }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        
+        .progress-section { margin-bottom: 30px; }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .progress-bar {
+            background: #333;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .module-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .module-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .module-btn.active { border-color: #667eea; color: #667eea; }
+        .module-btn.completed { background: #667eea; border-color: #667eea; color: white; }
+        .module-btn.locked { opacity: 0.3; cursor: not-allowed; }
+        
+        .module {
+            display: none;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .module.active { display: block; }
+        .module h2 { color: #667eea; margin-bottom: 20px; font-size: 1.8em; }
+        .module h3 { color: #aaa; margin: 25px 0 15px; }
+        .module p { color: #ccc; margin-bottom: 15px; }
+        
+        .code-box {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        
+        .highlight { color: #667eea; }
+        .comment { color: #6a9955; }
+        
+        .quiz {
+            background: #0a0a0a;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .quiz h3 { color: #667eea; margin-bottom: 20px; }
+        
+        .question { margin-bottom: 20px; }
+        .question p { color: #fff; margin-bottom: 10px; font-weight: 600; }
+        
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #1a1a1a;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .options label:hover { background: #252525; }
+        .options input { margin-right: 10px; }
+        
+        .submit-quiz {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .quiz-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .quiz-result.pass { background: #1a472a; color: #4ade80; }
+        .quiz-result.fail { background: #471a1a; color: #f87171; }
+        
+        .next-btn {
+            display: none;
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .certificate-section {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+        
+        .cert-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="../index.html" class="back-link">← All Courses</a>
+        <div class="user-info">
+            <span id="student-name">Student</span>
+        </div>
+    </div>
+    
+    <h1 style="margin-bottom: 10px;">⚡ Building AI Apps</h1>
+    <p style="color: #888; margin-bottom: 30px;">Build real AI-powered applications</p>
+    
+    <div class="progress-section">
+        <div class="progress-text">
+            <span>Overall Progress</span>
+            <span id="progress-text">0 / 3 Completed</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+    
+    <div class="module-nav" id="module-nav">
+        <button class="module-btn active" onclick="showModule(0)">1</button>
+        <button class="module-btn locked" onclick="showModule(1)">2</button>
+        <button class="module-btn locked" onclick="showModule(2)">3</button>
+    </div>
+    
+    <!-- MODULE 1 -->
+    <div class="module active" id="module-0">
+        <h2>Module 1: APIs & AI Services</h2>
+        
+        <h3>What is an API?</h3>
+        <p>An API (Application Programming Interface) is how your app talks to AI services. Think of it like a waiter: you order food (send request), kitchen prepares it (AI processes), waiter brings it back (you get response).</p>
+        
+        <h3>Popular AI APIs</h3>
+        <p>• <strong>OpenAI API</strong> — GPT-4, ChatGPT capabilities<br>
+        • <strong>Claude API</strong> — Anthropic's AI assistant<br>
+        • <strong>Google Gemini</strong> — Google's AI models<br>
+        • <strong>Hugging Face</strong> — Open-source AI models</p>
+        
+        <h3>API Key Basics</h3>
+        <p>Every API requires a key (like a password). Never share your API key or put it in public code!</p>
+        
+        <div class="code-box">
+<span class="comment">// Example: API request structure</span><br>
+<span class="highlight">fetch</span>(<span class="highlight">'https://api.openai.com/v1/chat/completions'</span>, {<br>
+&nbsp;&nbsp;method: <span class="highlight">'POST'</span>,<br>
+&nbsp;&nbsp;headers: {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">'Authorization'</span>: <span class="highlight">'Bearer YOUR_API_KEY'</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">'Content-Type'</span>: <span class="highlight">'application/json'</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;body: <span class="highlight">JSON.stringify</span>({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model: <span class="highlight">'gpt-3.5-turbo'</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;messages: [{role: <span class="highlight">'user'</span>, content: <span class="highlight">'Hello!'</span>}]<br>
+&nbsp;&nbsp;})<br>
+})
+        </div>
+        
+        <div class="quiz">
+            <h3>📝 Module 1 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. What does API stand for?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-1" value="wrong"> Artificial Programming Intelligence</label>
+                    <label><input type="radio" name="q0-1" value="correct"> Application Programming Interface</label>
+                    <label><input type="radio" name="q0-1" value="wrong"> Automated Process Integration</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Why do you need an API key?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-2" value="correct"> To authenticate and access the AI service</label>
+                    <label><input type="radio" name="q0-2" value="wrong"> To make the code colorful</label>
+                    <label><input type="radio" name="q0-2" value="wrong"> To slow down your app</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. Which is a popular AI API provider?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-3" value="wrong"> Microsoft Word</label>
+                    <label><input type="radio" name="q0-3" value="correct"> OpenAI</label>
+                    <label><input type="radio" name="q0-3" value="wrong"> Adobe Photoshop</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(0)">Submit Quiz</button>
+
