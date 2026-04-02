@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning - SWAL Learn</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .back-link { color: #667eea; text-decoration: none; }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        
+        .progress-section { margin-bottom: 30px; }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .progress-bar {
+            background: #333;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .module-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .module-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .module-btn.active { border-color: #667eea; color: #667eea; }
+        .module-btn.completed { background: #667eea; border-color: #667eea; color: white; }
+        .module-btn.locked { opacity: 0.3; cursor: not-allowed; }
+        
+        .module {
+            display: none;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .module.active { display: block; }
+        .module h2 { color: #667eea; margin-bottom: 20px; font-size: 1.8em; }
+        .module h3 { color: #aaa; margin: 25px 0 15px; }
+        .module p { color: #ccc; margin-bottom: 15px; }
+        
+        .code-box {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        
+        .highlight { color: #667eea; }
+        .comment { color: #6a9955; }
+        
+        .quiz {
+            background: #0a0a0a;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .quiz h3 { color: #667eea; margin-bottom: 20px; }
+        
+        .question { margin-bottom: 20px; }
+        .question p { color: #fff; margin-bottom: 10px; font-weight: 600; }
+        
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #1a1a1a;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .options label:hover { background: #252525; }
+        .options input { margin-right: 10px; }
+        
+        .submit-quiz {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .quiz-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .quiz-result.pass { background: #1a472a; color: #4ade80; }
+        .quiz-result.fail { background: #471a1a; color: #f87171; }
+        
+        .next-btn {
+            display: none;
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .certificate-section {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+        
+        .cert-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="../index.html" class="back-link">← All Courses</a>
+        <div class="user-info">
+            <span id="student-name">Student</span>
+        </div>
+    </div>
+    
+    <h1 style="margin-bottom: 10px;">🧠 Machine Learning</h1>
+    <p style="color: #888; margin-bottom: 30px;">ML fundamentals, models, and training</p>
+    
+    <div class="progress-section">
+        <div class="progress-text">
+            <span>Overall Progress</span>
+            <span id="progress-text">0 / 3 Completed</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+    
+    <div class="module-nav" id="module-nav">
+        <button class="module-btn active" onclick="showModule(0)">1</button>
+        <button class="module-btn locked" onclick="showModule(1)">2</button>
+        <button class="module-btn locked" onclick="showModule(2)">3</button>
+    </div>
+    
+    <!-- MODULE 1 -->
+    <div class="module active" id="module-0">
+        <h2>Module 1: ML Basics</h2>
+        
+        <h3>What is Machine Learning?</h3>
+        <p>Machine Learning is a way for computers to learn patterns from data without being explicitly programmed. Instead of writing rules, you feed the computer examples and it figures out the rules itself.</p>
+        
+        <h3>How ML Works</h3>
+        <p>1. <strong>Collect Data</strong> — Gather examples (images, text, numbers)<br>
+        2. <strong>Train Model</strong> — Computer finds patterns in the data<br>
+        3. <strong>Test Model</strong> — Check if it works on new data<br>
+        4. <strong>Deploy</strong> — Use the model to make predictions</p>
+        
+        <h3>Types of ML</h3>
+        <p>• <strong>Supervised Learning</strong> — Learn from labeled examples (input → known output)<br>
+        • <strong>Unsupervised Learning</strong> — Find patterns in unlabeled data<br>
+        • <strong>Reinforcement Learning</strong> — Learn by trial and error with rewards</p>
+        
+        <div class="code-box">
+<span class="comment"># Example: Simple prediction concept</span><br>
+<span class="highlight"># Input: House size (sq ft)</span><br>
+<span class="highlight"># Output: Price ($)</span><br><br>
+<span class="comment"># Training data</span><br>
+houses = [[1000], [1500], [2000]]  <span class="comment"># sizes</span><br>
+prices = [200000, 300000, 400000]  <span class="comment"># prices</span><br><br>
+<span class="comment"># Model learns: price = size × 200</span>
+        </div>
+        
+        <div class="quiz">
+            <h3>📝 Module 1 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. What is Machine Learning?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-1" value="wrong"> Writing every rule manually</label>
+                    <label><input type="radio" name="q0-1" value="correct"> Computers learning patterns from data</label>
+                    <label><input type="radio" name="q0-1" value="wrong"> Only used in robots</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Which type uses labeled examples?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-2" value="correct"> Supervised Learning</label>
+                    <label><input type="radio" name="q0-2" value="wrong"> Unsupervised Learning</label>
+                    <label><input type="radio" name="q0-2" value="wrong"> All types</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. What is the first step in ML?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-3" value="wrong"> Deploy the model</label>
+                    <label><input type="radio" name="q0-3" value="correct"> Collect data</label>
+                    <label><input type="radio" name="q0-3" value="wrong"> Write the code</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(0)">Submit Quiz</button>
+            <div class="quiz-result" id="result-0"></div>
+            <button class="next-btn" id="next-0" onclick="unlockNext(1)">→ Unlock Module 2</button>
+        </div>
+    </div>
+    
+    <!-- MODULE 2 -->
+    <div class="module" id="module-1">
+        <h2>Module 2: Training & Evaluation</h2>
+        
+        <h3>Training vs Testing Data</h3>
+        <p>You must split your data: 80% for training, 20% for testing. Never test on data the model has already seen!</p>
+        
+        <h3>Overfitting & Underfitting</h3>
+        <p>• <strong>Overfitting</strong> — Model memorizes training data but fails on new data<br>
+        • <strong>Underfitting</strong> — Model too simple, misses patterns<br>
+        • <strong>Good Fit</strong> — Balanced, generalizes well</p>
+        
+        <h3>Key Metrics</h3>
+        <p>• <strong>Accuracy</strong> — % of correct predictions<br>
+        • <strong>Precision</strong> — Of predicted positive, how many are actually positive<br>
+        • <strong>Recall</strong> — Of actual positives, how many did we find</p>
+        
+        <div class="code-box">
+<span class="comment"># Example: Train/Test split</span><br>
+<span class="highlight">from</span> sklearn.model_selection <span class="highlight">import</span> train_test_split<br><br>
+<span class="comment"># Split data: 80% train, 20% test</span><br>
+X_train, X_test, y_train, y_test = train_test_split(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data, labels, test_size=0.2<br>
+)<br><br>
+<span class="comment"># Train on X_train, test on X_test</span>
+        </div>
+        
+        <div class="quiz">
+            <h3>📝 Module 2 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. Why split data into train and test sets?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-1" value="correct"> To check if model works on new, unseen data</label>
+                    <label><input type="radio" name="q1-1" value="wrong"> To make the code longer</label>
+                    <label><input type="radio" name="q1-1" value="wrong"> To use less memory</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. What is overfitting?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-2" value="correct"> Model memorizes training data but fails on new data</label>
+                    <label><input type="radio" name="q1-2" value="wrong"> Model is too simple</label>
+                    <label><input type="radio" name="q1-2" value="wrong"> Training takes too long</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. What does accuracy measure?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-3" value="correct"> Percentage of correct predictions</label>
+                    <label><input type="radio" name="q1-3" value="wrong"> Speed of training</label>
+                    <label><input type="radio" name="q1-3" value="wrong"> Size of the dataset</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(1)">Submit Quiz</button>
+            <div class="quiz-result" id="result-1"></div>
+            <button class="next-btn" id="next-1" onclick="unlockNext(2)">→ Unlock Module 3</button>
+        </div>
+    </div>
+    
+    <!-- MODULE 3 -->
+    <div class="module" id="module-2">
+        <h2>Module 3: Neural Networks & Deep Learning</h2>
+        
+        <h3>What is a Neural Network?</h3>
+        <p>A neural network is a computer system inspired by the human brain. It has layers of connected nodes (neurons) that process information and learn patterns.</p>
+        
+        <h3>Deep Learning</h3>
+        <p>Deep Learning uses neural networks with many hidden layers (hence "deep"). This enables recognition of complex patterns in images, speech, and text.</p>
+        
+        <h3>Popular Frameworks</h3>
+        <p>• <strong>TensorFlow</strong> — Google's ML platform<br>
+        • <strong>PyTorch</strong> — Facebook's research-friendly framework<br>
+        • <strong>Scikit-learn</strong> — Simple, great for beginners<br>
+        • <strong>Keras</strong> — User-friendly, runs on TensorFlow</p>
+        
+        <div class="code-box">
+<span class="comment"># Example: Neural network with Keras</span><br>
+<span class="highlight">from</span> tensorflow <span class="highlight">import</span> keras<br><br>
+model = keras.Sequential([<br>
+&nbsp;&nbsp;&nbsp;&nbsp;keras.layers.Dense(128, activation=<span class="highlight">'relu'</span>),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;keras.layers.Dense(64, activation=<span class="highlight">'relu'</span>),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;keras.layers.Dense(10, activation=<span class="highlight">'softmax'</span>)<br>
+])<br><br>
+model.compile(optimizer=<span class="highlight">'adam'</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss=<span class="highlight">'sparse_categorical_crossentropy'</span>)
+        </div>
+        
+        <div class="quiz">
+            <h3>📝 Module 3 Quiz (Final)</h3>
+            
+            <div class="question">
+                <p>1. What makes a neural network "deep"?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-1" value="correct"> Many hidden layers</label>
+                    <label><input type="radio" name="q2-1" value="wrong"> It runs underwater</label>
+                    <label><input type="radio" name="q2-1" value="wrong"> It uses more electricity</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Which framework is best for beginners?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-2" value="wrong"> Only TensorFlow</label>
+                    <label><input type="radio" name="q2-2" value="correct"> Scikit-learn or Keras</label>
+                    <label><input type="radio" name="q2-2" value="wrong"> Assembly language</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. What can deep learning recognize?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-3" value="correct"> Complex patterns in images, speech, and text</label>
+                    <label><input type="radio" name="q2-3" value="wrong"> Only numbers</label>
+                    <label><input type="radio" name="q2-3" value="wrong"> Nothing useful</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(2)">Submit Final Quiz</button>
+            <div class="quiz-result" id="result-2"></div>
+        </div>
+    </div>
+    
+    <div class="certificate-section" id="cert-section">
+        <h2>🎉 Course Completed!</h2>
+        <p>Congratulations! You understand Machine Learning fundamentals.</p>
+        <a href="../certificate.html?course=Machine%20Learning" class="cert-btn" target="_blank">📜 Get Your Certificate</a>
+    </div>
+
+    <script src="../auth-check.js"></script>
+    <script src="../progress.js"></script>
+    <script>
+        const COURSE_ID = 'machine-learning';
+        const TOTAL_MODULES = 3;
+        
+        const user = JSON.parse(localStorage.getItem('swal_user') || '{}');
+        if (user.name) document.getElementById('student-name').textContent = user.name;
+        
+        function loadProgress() {
+            let completed = 0;
+            for (let i = 0; i < TOTAL_MODULES; i++) {
+                if (ProgressTracker.isUnlocked(COURSE_ID, i)) {
+                    document.querySelectorAll('.module-btn')[i].classList.add('completed');
+                    document.querySelectorAll('.module-btn')[i].classList.remove('locked');
+                    completed++;
+                    const quiz = ProgressTracker.getQuiz(COURSE_ID, `module_${i}`);
+                    if (quiz && quiz.passed && i < TOTAL_MODULES - 1) {
+                        document.getElementById(`next-${i}`).style.display = 'inline-block';
+                    }
+                }
+            }
+            const percent = (completed / TOTAL_MODULES) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `${completed} / ${TOTAL_MODULES} Completed`;
+            if (completed === TOTAL_MODULES) {
+                document.getElementById('cert-section').style.display = 'block';
+            }
+            return completed;
+        }
+        
+        function showModule(index) {
+            if (!ProgressTracker.isUnlocked(COURSE_ID, index)) {
+                alert('🔒 Complete the previous module quiz to unlock this!');
+                return;
+            }
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`module-${index}`).classList.add('active');
+            document.querySelectorAll('.module-btn')[index].classList.add('active');
+        }
+        
+        function submitQuiz(moduleIndex) {
+            const moduleDiv = document.getElementById(`module-${moduleIndex}`);
+            const questions = moduleDiv.querySelectorAll('.question');
+            let correct = 0;
+            let answered = 0;
+            
+            questions.forEach((q) => {
+                const selected = q.querySelector('input[type="radio"]:checked');
+                if (selected) {
+                    answered++;
+                    if (selected.value === 'correct') correct++;
+                }
+            });
+            
+            if (answered < questions.length) {
+                alert(`Please answer all ${questions.length} questions`);
+                return;
+            }
+            
+            const result = ProgressTracker.saveQuiz(COURSE_ID, moduleIndex, correct, questions.length);
+            const resultDiv = document.getElementById(`result-${moduleIndex}`);
+            
+            if (result.passed) {
+                resultDiv.className = 'quiz-result pass';
+                resultDiv.innerHTML = `✅ PASSED! ${correct}/${questions.length} correct.`;
+                if (moduleIndex < TOTAL_MODULES - 1) {
+                    document.getElementById(`next-${moduleIndex}`).style.display = 'inline-block';
+                }
+                document.querySelectorAll('.module-btn')[moduleIndex].classList.add('completed');
+            } else {
+                resultDiv.className = 'quiz-result fail';
+                resultDiv.innerHTML = `❌ FAILED. ${correct}/${questions.length} correct. Need 70% to pass.`;
+            }
+            resultDiv.style.display = 'block';
+            loadProgress();
+        }
+        
+        function unlockNext(nextIndex) {
+            ProgressTracker.saveModule(COURSE_ID, nextIndex);
+            document.querySelectorAll('.module-btn')[nextIndex].classList.remove('locked');
+            showModule(nextIndex);
+        }
+        
+        loadProgress();
+    </script>
+</body>
+</html>
+
