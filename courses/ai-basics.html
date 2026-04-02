@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Basics - SWAL Learn</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 30px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .progress-bar {
+            background: #333;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        /* Module Navigation */
+        .module-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .module-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .module-btn.active {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .module-btn.completed {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+        
+        .module-btn.locked {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        /* Module Content */
+        .module {
+            display: none;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .module.active {
+            display: block;
+        }
+        
+        .module h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .module h3 {
+            color: #aaa;
+            margin: 25px 0 15px;
+        }
+        
+        .module p {
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        /* Quiz */
+        .quiz {
+            background: #0a0a0a;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .quiz h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .question p {
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #1a1a1a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .options label:hover {
+            background: #252525;
+        }
+        
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .submit-quiz {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .quiz-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .quiz-result.pass {
+            background: #1a472a;
+            color: #4ade80;
+        }
+        
+        .quiz-result.fail {
+            background: #471a1a;
+            color: #f87171;
+        }
+        
+        .next-btn {
+            display: none;
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        /* Certificate Section */
+        .certificate-section {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+        
+        .certificate-section h2 {
+            margin-bottom: 15px;
+        }
+        
+        .cert-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        /* Locked Overlay */
+        .locked-overlay {
+            background: rgba(0,0,0,0.8);
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+        }
+        
+        .module-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a href="../index.html" class="back-link">← All Courses</a>
+        <div class="user-info">
+            <span id="student-name">Student</span>
+        </div>
+    </div>
+    
+    <!-- Title -->
+    <h1 style="margin-bottom: 10px;">🤖 AI Basics</h1>
+    <p style="color: #888; margin-bottom: 30px;">Introduction to Artificial Intelligence</p>
+    
+    <!-- Progress -->
+    <div class="progress-section">
+        <div class="progress-text">
+            <span>Overall Progress</span>
+            <span id="progress-text">0 / 3 Completed</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+    
+    <!-- Module Navigation -->
+    <div class="module-nav" id="module-nav">
+        <button class="module-btn active" onclick="showModule(0)">1</button>
+        <button class="module-btn locked" onclick="showModule(1)">2</button>
+        <button class="module-btn locked" onclick="showModule(2)">3</button>
+    </div>
+    
+    <!-- Module 1 -->
+    <div class="module active" id="module-0">
+        <h2>Module 1: What is AI?</h2>
+        
+        <h3>Definition</h3>
+        <p>Artificial Intelligence (AI) is the ability of a computer or machine to perform tasks that normally require human intelligence. These tasks include understanding language, recognizing images, making decisions, and learning from experience.</p>
+        
+        <h3>Simple Analogy</h3>
+        <p>Think of AI as teaching a computer to think — not by programming every single rule, but by showing it lots of examples so it figures out the patterns itself.</p>
+        
+        <h3>Key Facts</h3>
+        <p>• AI is not magic — it's math and data working together<br>
+        • AI systems learn from examples, just like humans learn from experience<br>
+        • AI can be narrow (good at one thing) or general (good at many things)<br>
+        • Most AI today is narrow AI — designed for specific tasks</p>
+        
+        <h3>Real World Examples</h3>
+        <p>• Netflix recommending what to watch next<br>
+        • Google autocompleting your searches<br>
+        • Face unlock on your phone<br>
+        • Spam filters in your email</p>
+        
+        <!-- Quiz -->
+        <div class="quiz">
+            <h3>📝 Module 1 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. What is the best definition of AI?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-1" value="wrong"> A robot that looks like a human</label>
+                    <label><input type="radio" name="q0-1" value="correct"> A computer system that performs tasks requiring human intelligence</label>
+                    <label><input type="radio" name="q0-1" value="wrong"> Software that runs on the internet</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. Which is an example of AI you use daily?</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-2" value="wrong"> A light switch</label>
+                    <label><input type="radio" name="q0-2" value="correct"> Netflix recommendations</label>
+                    <label><input type="radio" name="q0-2" value="wrong"> A USB keyboard</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. Most AI systems today are:</p>
+                <div class="options">
+                    <label><input type="radio" name="q0-3" value="wrong"> General AI</label>
+                    <label><input type="radio" name="q0-3" value="correct"> Narrow AI</label>
+                    <label><input type="radio" name="q0-3" value="wrong"> Superintelligence</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(0)">Submit Quiz</button>
+            
+            <div class="quiz-result" id="result-0"></div>
+            <button class="next-btn" id="next-0" onclick="unlockNext(1)">→ Unlock Module 2</button>
+        </div>
+    </div>
+    
+    <!-- Module 2 -->
+    <div class="module" id="module-1">
+        <h2>Module 2: History of AI</h2>
+        
+        <h3>The Beginning</h3>
+        <p>AI didn't start with ChatGPT. The idea goes back to 1950 when mathematician Alan Turing asked: "Can machines think?" He invented the Turing Test — a way to measure if a machine could hold a conversation indistinguishable from a human.</p>
+        
+        <h3>Key Milestones</h3>
+        <p>• 1950 — Alan Turing proposes the Turing Test<br>
+        • 1956 — The term "Artificial Intelligence" is coined at Dartmouth College<br>
+        • 1997 — IBM Deep Blue defeats world chess champion Garry Kasparov<br>
+        • 2011 — IBM Watson wins Jeopardy!<br>
+        • 2022 — ChatGPT reaches 100 million users in 2 months</p>
+        
+        <h3>AI Winters</h3>
+        <p>AI didn't grow in a straight line. There were periods called "AI winters" where funding dried up and progress slowed — because expectations were too high and computers weren't powerful enough yet.</p>
+        
+        <!-- Quiz -->
+        <div class="quiz">
+            <h3>📝 Module 2 Quiz (Pass 70% to continue)</h3>
+            
+            <div class="question">
+                <p>1. Who proposed the Turing Test in 1950?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-1" value="wrong"> Albert Einstein</label>
+                    <label><input type="radio" name="q1-1" value="correct"> Alan Turing</label>
+                    <label><input type="radio" name="q1-1" value="wrong"> Bill Gates</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. What are "AI winters"?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-2" value="wrong"> When AI servers get cold</label>
+                    <label><input type="radio" name="q1-2" value="correct"> Periods when AI research slowed due to unmet expectations</label>
+                    <label><input type="radio" name="q1-2" value="wrong"> AI trained in cold countries</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. Which milestone happened in 1997?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1-3" value="correct"> IBM Deep Blue defeated world chess champion</label>
+                    <label><input type="radio" name="q1-3" value="wrong"> ChatGPT was launched</label>
+                    <label><input type="radio" name="q1-3" value="wrong"> The internet was invented</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(1)">Submit Quiz</button>
+            
+            <div class="quiz-result" id="result-1"></div>
+            <button class="next-btn" id="next-1" onclick="unlockNext(2)">→ Unlock Module 3</button>
+        </div>
+    </div>
+    
+    <!-- Module 3 -->
+    <div class="module" id="module-2">
+        <h2>Module 3: Types of AI</h2>
+        
+        <h3>The 3 Types</h3>
+        <p>• <strong>Narrow AI (ANI)</strong> — Designed for one specific task. ALL the AI we have today.<br>
+        • <strong>General AI (AGI)</strong> — Can perform any intellectual task a human can. Does not exist yet.<br>
+        • <strong>Superintelligence (ASI)</strong> — Smarter than the best human in every field. Theoretical only.</p>
+        
+        <h3>Learning Approaches</h3>
+        <p>• <strong>Supervised Learning</strong> — Learns from labelled examples<br>
+        • <strong>Unsupervised Learning</strong> — Finds patterns in unlabelled data<br>
+        • <strong>Reinforcement Learning</strong> — Learns by trial and error with rewards</p>
+        
+        <!-- Quiz -->
+        <div class="quiz">
+            <h3>📝 Module 3 Quiz (Final)</h3>
+            
+            <div class="question">
+                <p>1. Which type of AI exists TODAY?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-1" value="correct"> Narrow AI</label>
+                    <label><input type="radio" name="q2-1" value="wrong"> General AI</label>
+                    <label><input type="radio" name="q2-1" value="wrong"> Superintelligence</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>2. An AI learning by trial and error with rewards uses:</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-2" value="wrong"> Supervised Learning</label>
+                    <label><input type="radio" name="q2-2" value="correct"> Reinforcement Learning</label>
+                    <label><input type="radio" name="q2-2" value="wrong"> Unsupervised Learning</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <p>3. ChatGPT can write text but cannot drive a car. This shows it is:</p>
+                <div class="options">
+                    <label><input type="radio" name="q2-3" value="correct"> Narrow AI</label>
+                    <label><input type="radio" name="q2-3" value="wrong"> General AI</label>
+                    <label><input type="radio" name="q2-3" value="wrong"> Broken</label>
+                </div>
+            </div>
+            
+            <button class="submit-quiz" onclick="submitQuiz(2)">Submit Final Quiz</button>
+            
+            <div class="quiz-result" id="result-2"></div>
+        </div>
+    </div>
+    
+    <!-- Certificate Section -->
+    <div class="certificate-section" id="cert-section">
+        <h2>🎉 Course Completed!</h2>
+        <p>Congratulations! You've passed all modules.</p>
+        <a href="../certificate.html?course=AI%20Basics" class="cert-btn" target="_blank">📜 Get Your Certificate</a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../auth-check.js"></script>
+    <script src="../progress.js"></script>
+    <script>
+        const COURSE_ID = 'ai-basics';
+        const TOTAL_MODULES = 3;
+        
+        // Load user
+        const user = JSON.parse(localStorage.getItem('swal_user') || '{}');
+        if (user.name) {
+            document.getElementById('student-name').textContent = user.name;
+        }
+        
+        // Load saved progress
+        function loadProgress() {
+            let completed = 0;
+            
+            for (let i = 0; i < TOTAL_MODULES; i++) {
+                if (ProgressTracker.isUnlocked(COURSE_ID, i)) {
+                    // Mark as completed
+                    document.querySelectorAll('.module-btn')[i].classList.add('completed');
+                    document.querySelectorAll('.module-btn')[i].classList.remove('locked');
+                    completed++;
+                    
+                    // Show next button if quiz was passed
+                    const quiz = ProgressTracker.getQuiz(COURSE_ID, `module_${i}`);
+                    if (quiz && quiz.passed && i < TOTAL_MODULES - 1) {
+                        document.getElementById(`next-${i}`).style.display = 'inline-block';
+                    }
+                }
+            }
+            
+            // Update progress bar
+            const percent = (completed / TOTAL_MODULES) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `${completed} / ${TOTAL_MODULES} Completed`;
+            
+            // Show certificate if all done
+            if (completed === TOTAL_MODULES) {
+                document.getElementById('cert-section').style.display = 'block';
+            }
+            
+            return completed;
+        }
+        
+        // Show specific module
+        function showModule(index) {
+            if (!ProgressTracker.isUnlocked(COURSE_ID, index)) {
+                alert('🔒 Complete the previous module quiz to unlock this!');
+                return;
+            }
+            
+            // Hide all modules
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.module-btn').forEach(b => b.classList.remove('active'));
+            
+            // Show selected
+            document.getElementById(`module-${index}`).classList.add('active');
+            document.querySelectorAll('.module-btn')[index].classList.add('active');
+        }
+        
+        // Submit quiz
+        function submitQuiz(moduleIndex) {
+            const moduleDiv = document.getElementById(`module-${moduleIndex}`);
+            const questions = moduleDiv.querySelectorAll('.question');
+            let correct = 0;
+            let answered = 0;
+            
+            questions.forEach((q, i) => {
+                const selected = q.querySelector('input[type="radio"]:checked');
+                if (selected) {
+                    answered++;
+                    if (selected.value === 'correct') {
+                        correct++;
+                    }
+                }
+            });
+            
+            if (answered < questions.length) {
+                alert(`Please answer all ${questions.length} questions`);
+                return;
+            }
+            
+            const result = ProgressTracker.saveQuiz(COURSE_ID, moduleIndex, correct, questions.length);
+            const resultDiv = document.getElementById(`result-${moduleIndex}`);
+            
+            if (result.passed) {
+                resultDiv.className = 'quiz-result pass';
+                resultDiv.innerHTML = `✅ PASSED! ${correct}/${questions.length} correct. You can proceed to the next module.`;
+                
+                if (moduleIndex < TOTAL_MODULES - 1) {
+                    document.getElementById(`next-${moduleIndex}`).style.display = 'inline-block';
+                }
+                
+                // Update button
+                document.querySelectorAll('.module-btn')[moduleIndex].classList.add('completed');
+            } else {
+                resultDiv.className = 'quiz-result fail';
+                resultDiv.innerHTML = `❌ FAILED. ${correct}/${questions.length} correct. You need 70% to pass. Try again!`;
+            }
+            
+            resultDiv.style.display = 'block';
+            loadProgress();
+        }
+        
+        // Unlock next module
+        function unlockNext(nextIndex) {
+            ProgressTracker.saveModule(COURSE_ID, nextIndex);
+            document.querySelectorAll('.module-btn')[nextIndex].classList.remove('locked');
+            showModule(nextIndex);
+        }
+        
+        // Initialize
+        loadProgress();
+    </script>
+</body>
+</html>
+
