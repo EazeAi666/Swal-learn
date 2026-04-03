@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SWAL AI Learning - Master Web Development from foundations to advanced concepts">
+    <meta property="og:title" content="SWAL-Learn | Module 1: Web Foundations">
+    <meta property="og:description" content="Master the art of building professional websites with SWAL AI">
+    <title>SWAL-Learn | Module 1: Web Foundations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .progress-indicator {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            width: 150px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 20%;
+            transition: width 0.3s ease;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 80px;
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .module-list {
+            list-style: none;
+        }
+
+        .module-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .module-item:hover {
+            background: var(--bg);
+        }
+
+        .module-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .module-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .module-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Lesson Cards */
+        .lesson-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border-left: 4px solid var(--success);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #bbf7d0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .lesson-card h2 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .lesson-card code {
+            background: #e0e7ff;
+            color: var(--primary-dark);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+        }
+
+        .lesson-card ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .lesson-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .question-card {
+            background: var(--bg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+        }
+
+        .question-card p {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: #eef2ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 0.75rem;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: #eef2ff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+        }
+
+        /* Results */
+        .result-panel {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-panel.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-panel.success {
+            background: #f0fdf4;
+            border: 2px solid var(--success);
+        }
+
+        .result-panel.fail {
+            background: #fef2f2;
+            border: 2px solid var(--danger);
+        }
+
+        .result-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-panel.success .result-title { color: var(--success); }
+        .result-panel.fail .result-title { color: var(--danger); }
+
+        .next-module-btn {
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .next-module-btn:hover {
+            transform: translateX(5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+                order: -1;
+            }
+        }
+
+        /* Celebration Animation */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">🚀 SWAL-Learn</a>
+            <div class="progress-indicator">
+                <span>Course Progress</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="courseProgress"></div>
+                </div>
+                <span id="progressText">20%</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="course-title">🎓 Web Development Mastery</div>
+            <ul class="module-list" id="moduleList">
+                <li class="module-item active" onclick="goToModule(1)">
+                    <span class="module-icon">📗</span>
+                    <span>Module 1: HTML Foundations</span>
+                </li>
+                <li class="module-item locked" id="mod2" onclick="goToModule(2)">
+                    <span class="module-icon">🔒</span>
+                    <span>Module 2: CSS Styling</span>
+                </li>
+                <li class="module-item locked" id="mod3" onclick="goToModule(3)">
+                    <span class="module-icon">🔒</span>
+                    <span>Module 3: JavaScript Basics</span>
+                </li>
+                <li class="module-item locked" id="mod4" onclick="goToModule(4)">
+                    <span class="module-icon">🔒</span>
+                    <span>Module 4: DOM Manipulation</span>
+                </li>
+                <li class="module-item locked" id="mod5" onclick="goToModule(5)">
+                    <span class="module-icon">🔒</span>
+                    <span>Module 5: Final Project</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>🏗️ Module 1: Advanced HTML Structure</h1>
+                <p>Master the art of building semantic, accessible, and SEO-friendly websites with SWAL AI.</p>
+            </div>
+
+            <!-- Lesson Content -->
+            <div class="lesson-content">
+                <article class="lesson-card">
+                    <h2>1. Beyond the <code>&lt;div&gt;</code>: Semantic HTML</h2>
+                    <p>Professional web development is about <strong>Semantics</strong>. Search engines (SEO) and assistive technologies understand your code better when you use tags that have meaning.</p>
+                    <ul>
+                        <li><strong><code>&lt;main&gt;</code></strong>: Wraps the core content of your page. Only one per page.</li>
+                        <li><strong><code>&lt;section&gt;</code></strong>: For distinct thematic groupings with their own heading.</li>
+                        <li><strong><code>&lt;article&gt;</code></strong>: For content that can stand alone (blog posts, news stories).</li>
+                        <li><strong><code>&lt;aside&gt;</code></strong>: For tangentially related content (sidebars, call-out boxes).</li>
+                    </ul>
+                </article>
+
+                <article class="lesson-card">
+                    <h2>2. The Meta-Universe & Open Graph</h2>
+                    <p>The <code>&lt;head&gt;</code> section controls how your site appears on search engines and social media. <strong>Open Graph (OG)</strong> tags determine preview cards on Facebook, LinkedIn, and Twitter.</p>
+                    <ul>
+                        <li><code>&lt;meta name="description"&gt;</code>: Search engine snippet (150-160 chars)</li>
+                        <li><code>&lt;meta property="og:title"&gt;</code>: Social media title</li>
+                        <li><code>&lt;meta property="og:image"&gt;</code>: Social preview image</li>
+                    </ul>
+                </article>
+
+                <article class="lesson-card">
+                    <h2>3. Accessibility First</h2>
+                    <p>Great websites work for everyone. Semantic HTML is the foundation of web accessibility (a11y).</p>
+                    <ul>
+                        <li>Use <code>&lt;button&gt;</code> for clickable actions (not styled divs)</li>
+                        <li>Always include <code>alt</code> text for images</li>
+                        <li>Ensure proper heading hierarchy (h1 → h2 → h3)</li>
+                    </ul>
+                </article>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <span class="quiz-badge">🧠 Knowledge Check</span>
+                    <h2>Module 1 Assessment</h2>
+                    <p style="color: var(--text-muted);">Score at least <strong>70%</strong> to unlock Module 2: CSS Styling</p>
+                </div>
+
+                <form id="quizForm">
+                    <div class="question-card">
+                        <p>1. Which tag is semantically best for a standalone news story?</p>
+                        <label class="option" onclick="selectOption(this, 'q1', 'a')">
+                            <input type="radio" name="q1" value="a">
+                            <span>&lt;div&gt; - A generic container</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q1', 'b')">
+                            <input type="radio" name="q1" value="b">
+                            <span>&lt;section&gt; - Thematic grouping</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q1', 'c')">
+                            <input type="radio" name="q1" value="c">
+                            <span>&lt;article&gt; - Self-contained content</span>
+                        </label>
+                    </div>
+
+                    <div class="question-card">
+                        <p>2. What does "Semantic HTML" primarily help with?</p>
+                        <label class="option" onclick="selectOption(this, 'q2', 'a')">
+                            <input type="radio" name="q2" value="a">
+                            <span>Making websites load faster</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q2', 'b')">
+                            <input type="radio" name="q2" value="b">
+                            <span>Describing content meaning for SEO & accessibility</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q2', 'c')">
+                            <input type="radio" name="q2" value="c">
+                            <span>Replacing CSS for styling</span>
+                        </label>
+                    </div>
+
+                    <div class="question-card">
+                        <p>3. Which meta tag controls social media preview cards?</p>
+                        <label class="option" onclick="selectOption(this, 'q3', 'a')">
+                            <input type="radio" name="q3" value="a">
+                            <span>&lt;meta name="keywords"&gt;</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q3', 'b')">
+                            <input type="radio" name="q3" value="b">
+                            <span>&lt;meta property="og:title"&gt;</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q3', 'c')">
+                            <input type="radio" name="q3" value="c">
+                            <span>&lt;meta name="viewport"&gt;</span>
+                        </label>
+                    </div>
+
+                    <button type="button" class="btn-primary" id="submitBtn" onclick="calculateScore()">
+                        Submit Answers
+                    </button>
+                </form>
+
+                <!-- Results Panel -->
+                <div id="resultPanel" class="result-panel">
+                    <div class="result-icon" id="resultIcon"></div>
+                    <div class="result-title" id="resultTitle"></div>
+                    <p id="resultMessage"></p>
+                    <a href="module2.html" id="nextBtn" class="next-module-btn hidden">
+                        Proceed to Module 2 ➡️
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Celebration Container -->
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        // Answer Key
+        const correctAnswers = {
+            q1: 'c',
+            q2: 'b',
+            q3: 'b'
+        };
+
+        // Track selected options visually
+        function selectOption(element, name, value) {
+            // Remove selected class from siblings
+            const siblings = element.parentElement.querySelectorAll('.option');
+            siblings.forEach(sib => sib.classList.remove('selected'));
+            
+            // Add to clicked
+            element.classList.add('selected');
+            
+            // Check the radio
+            element.querySelector('input').checked = true;
+        }
+
+        // Calculate Score
+        function calculateScore() {
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Check each answer
+            for (let q in correctAnswers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === correctAnswers[q]) {
+                    score++;
+                }
+            }
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            showResult(percentage, score, totalQuestions);
+        }
+
+        // Show Results
+        function showResult(percentage, score, total) {
+            const panel = document.getElementById('resultPanel');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const message = document.getElementById('resultMessage');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            panel.classList.add('show');
+            submitBtn.disabled = true;
+
+            if (percentage >= 70) {
+                // Success
+                panel.className = 'result-panel success show';
+                icon.textContent = '🎉';
+                title.textContent = 'Congratulations!';
+                message.innerHTML = `You scored <strong>${percentage}%</strong> (${score}/${total} correct).<br>Module 2: CSS Styling is now unlocked!`;
+                nextBtn.classList.remove('hidden');
+                
+                // Unlock in localStorage
+                localStorage.setItem('swal_module2_unlocked', 'true');
+                localStorage.setItem('swal_module1_completed', 'true');
+                localStorage.setItem('swal_progress', '40');
+                
+                // Update sidebar
+                unlockModule(2);
+                updateProgress();
+                
+                // Celebrate!
+                createConfetti();
+            } else {
+                // Fail
+                panel.className = 'result-panel fail show';
+                icon.textContent = '❌';
+                title.textContent = 'Keep Learning!';
+                message.innerHTML = `You scored <strong>${percentage}%</strong>.<br>You need 70% to pass. Review the lessons and try again!`;
+                nextBtn.classList.add('hidden');
+                
+                // Re-enable after 3 seconds
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                }, 3000);
+            }
+        }
+
+        // Unlock Module in Sidebar
+        function unlockModule(moduleNum) {
+            const mod = document.getElementById(`mod${moduleNum}`);
+            if (mod) {
+                mod.classList.remove('locked');
+                mod.querySelector('.module-icon').textContent = '📗';
+                mod.onclick = () => window.location.href = `module${moduleNum}.html`;
+            }
+        }
+
+        // Navigation
+        function goToModule(num) {
+            if (num === 1) return; // Already here
+            const isUnlocked = localStorage.getItem(`swal_module${num}_unlocked`) || 
+                              (num === 2 && localStorage.getItem('swal_module2_unlocked'));
+            
+            if (isUnlocked || num === 1) {
+                window.location.href = `module${num}.html`;
+            } else {
+                alert('🔒 Complete the previous module quiz to unlock this content!');
+            }
+        }
+
+        // Update Progress Bar
+        function updateProgress() {
+            const progress = localStorage.getItem('swal_progress') || '20';
+            document.getElementById('courseProgress').style.width = progress + '%';
+            document.getElementById('progressText').textContent = progress + '%';
+        }
+
+        // Confetti Animation
+        function createConfetti() {
+            const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            const container = document.getElementById('celebration');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            updateProgress();
+            
+            // Check if module 2 was previously unlocked
+            if (localStorage.getItem('swal_module2_unlocked')) {
+                unlockModule(2);
+            }
+        };
+    </script>
+</body>
+</html>
