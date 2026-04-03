@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAL-Learn | Module 1: Web Foundations</title>
+    <link rel="stylesheet" href="../css/style.css"> <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .lesson-card { background: #f9f9f9; padding: 25px; border-radius: 10px; border-left: 5px solid #2ecc71; margin-bottom: 30px; }
+        .quiz-section { background: #fff; border: 2px solid #e0e0e0; padding: 30px; border-radius: 15px; margin-top: 50px; }
+        .hidden { display: none; }
+        .btn-unlock { background: #2ecc71; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; margin-top: 20px; }
+        .btn-unlock:disabled { background: #ccc; cursor: not-allowed; }
+        .result-msg { font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏗️ Module 1: Advanced HTML Structure</h1>
+        <p>Master the art of building "Long & Good" websites with SWAL AI.</p>
+    </header>
+
+    <div class="lesson-content">
+        <section class="lesson-card">
+            <h2>1. Beyond the <code>&lt;div&gt;</code></h2>
+            <p>Professional web development is about <strong>Semantics</strong>. Search engines (SEO) and SWAL AI understand your code better when you use tags that have meaning.</p>
+            <ul>
+                <li><strong>&lt;main&gt;</strong>: Wraps the core content of your page.</li>
+                <li><strong>&lt;section&gt;</strong>: For distinct thematic groupings.</li>
+                <li><strong>&lt;article&gt;</strong>: For content that can stand alone (like a blog post).</li>
+            </ul>
+        </section>
+
+        <section class="lesson-card">
+            <h2>2. The Meta-Universe</h2>
+            <p>The <code>&lt;head&gt;</code> section isn't just for titles. It’s where you control how the world sees your site on social media using <strong>Open Graph (OG)</strong> tags.</p>
+        </section>
+    </div>
+
+    <hr>
+
+    <div class="quiz-section" id="quiz">
+        <h2>🧠 The Gateway Quiz</h2>
+        <p>You must score at least <strong>70%</strong> to unlock <em>Module 2: Interactivity</em>.</p>
+
+        <form id="courseQuiz">
+            <div class="question">
+                <p><strong>1. Which tag is best for a standalone news story?</strong></p>
+                <input type="radio" name="q1" value="a"> &lt;div&gt; <br>
+                <input type="radio" name="q1" value="b"> &lt;section&gt; <br>
+                <input type="radio" name="q1" value="c"> &lt;article&gt; </div>
+
+            <div class="question">
+                <p><strong>2. What does "Semantic HTML" mean?</strong></p>
+                <input type="radio" name="q2" value="a"> Making the site faster <br>
+                <input type="radio" name="q2" value="b"> Using tags that describe their content <input type="radio" name="q2" value="c"> Using only CSS for layout
+            </div>
+
+            <button type="button" class="btn-unlock" onclick="calculateScore()">Submit Answers</button>
+        </form>
+
+        <div id="result" class="result-msg"></div>
+        <button id="nextModuleBtn" class="btn-unlock hidden" onclick="window.location.href='web-dev-2.html'">Proceed to Module 2 ➡️</button>
+    </div>
+
+    <script>
+        function calculateScore() {
+            let score = 0;
+            const totalQuestions = 2; // Increase this as you add questions
+            
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+
+            if (q1 && q1.value === "c") score++;
+            if (q2 && q2.value === "b") score++;
+
+            const percentage = (score / totalQuestions) * 100;
+            const resultDiv = document.getElementById('result');
+            const nextBtn = document.getElementById('nextModuleBtn');
+
+            if (percentage >= 70) {
+                resultDiv.innerHTML = `🎉 Congratulations! You scored ${percentage}%. Module 2 is now Unlocked.`;
+                resultDiv.style.color = "green";
+                
+                // SAVE PROGRESS: This is the magic part
+                localStorage.setItem('swal_webdev_unlocked_mod2', 'true');
+                
+                nextBtn.classList.remove('hidden');
+            } else {
+                resultDiv.innerHTML = `❌ You scored ${percentage}%. You need 70% to pass. Review the lessons and try again!`;
+                resultDiv.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
