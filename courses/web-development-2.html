@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAL-Learn | Module 2: CSS Styling</title>
+    <style>
+        /* Same CSS variables and base styles as Module 1 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .navbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 2rem; padding: 2rem; }
+        .sidebar { background: var(--card); border-radius: 12px; padding: 1.5rem; height: fit-content; border: 1px solid var(--border); position: sticky; top: 80px; }
+        .course-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); }
+        .module-list { list-style: none; }
+        .module-item { padding: 0.75rem 1rem; margin-bottom: 0.5rem; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; }
+        .module-item:hover { background: var(--bg); }
+        .module-item.active { background: var(--primary); color: white; }
+        .module-item.locked { opacity: 0.5; cursor: not-allowed; }
+        .module-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        .main-content { background: var(--card); border-radius: 12px; padding: 2.5rem; border: 1px solid var(--border); }
+        .header { margin-bottom: 2rem; }
+        .header h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .lesson-card { background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-left: 4px solid #3b82f6; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border: 1px solid #bfdbfe; }
+        .lesson-card h2 { color: var(--text); margin-bottom: 1rem; font-size: 1.3rem; }
+        .lesson-card code { background: #dbeafe; color: #1e40af; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.9em; }
+        .css-demo { background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; font-family: 'Consolas', monospace; overflow-x: auto; }
+        .quiz-container { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border); }
+        .quiz-header { text-align: center; margin-bottom: 2rem; }
+        .quiz-header h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .quiz-badge { display: inline-block; background: linear-gradient(135deg, var(--warning), #d97706); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; }
+        .question-card { background: var(--bg); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 12px; border: 2px solid var(--border); }
+        .question-card p { font-weight: 600; margin-bottom: 1rem; font-size: 1.1rem; }
+        .option { display: flex; align-items: center; padding: 1rem; margin-bottom: 0.5rem; background: white; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .option:hover { border-color: var(--primary); background: #eef2ff; }
+        .option input[type="radio"] { margin-right: 0.75rem; width: 18px; height: 18px; accent-color: var(--primary); }
+        .option.selected { border-color: var(--primary); background: #eef2ff; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.2s, box-shadow 0.2s; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .result-panel { margin-top: 2rem; padding: 1.5rem; border-radius: 12px; text-align: center; display: none; }
+        .result-panel.show { display: block; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .result-panel.success { background: #f0fdf4; border: 2px solid var(--success); }
+        .result-panel.fail { background: #fef2f2; border: 2px solid var(--danger); }
+        .result-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .result-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .result-panel.success .result-title { color: var(--success); }
+        .result-panel.fail .result-title { color: var(--danger); }
+        .next-module-btn { margin-top: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; background: var(--success); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
+        .next-module-btn:hover { transform: translateX(5px); }
+        .hidden { display: none !important; }
+        .celebration { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+        .confetti { position: absolute; width: 10px; height: 10px; animation: confetti-fall 3s ease-out forwards; }
+        @keyframes confetti-fall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @media (max-width: 968px) { .container { grid-template-columns: 1fr; } .sidebar { position: static; order: -1; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">🚀 SWAL-Learn</a>
+            <div class="progress-indicator">
+                <span>Course Progress</span>
+                <div class="progress-bar"><div class="progress-fill" id="courseProgress" style="width: 40%"></div></div>
+                <span id="progressText">40%</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="course-title">🎓 Web Development Mastery</div>
+            <ul class="module-list">
+                <li class="module-item" onclick="window.location.href='module1.html'"><span class="module-icon">✅</span><span>Module 1: HTML Foundations</span></li>
+                <li class="module-item active"><span class="module-icon">📗</span><span>Module 2: CSS Styling</span></li>
+                <li class="module-item locked" id="mod3"><span class="module-icon">🔒</span><span>Module 3: JavaScript Basics</span></li>
+                <li class="module-item locked" id="mod4"><span class="module-icon">🔒</span><span>Module 4: DOM Manipulation</span></li>
+                <li class="module-item locked" id="mod5"><span class="module-icon">🔒</span><span>Module 5: Final Project</span></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h1>🎨 Module 2: CSS Styling Mastery</h1>
+                <p>Transform plain HTML into beautiful, responsive, and modern web experiences.</p>
+            </div>
+
+            <article class="lesson-card">
+                <h2>1. CSS Variables (Custom Properties)</h2>
+                <p>Create maintainable designs with CSS variables. Change your entire color scheme in one place!</p>
+                <div class="css-demo">
+:root {
+  --primary: #6366f1;
+  --spacing: 1rem;
+}
+.button {
+  background: var(--primary);
+  padding: var(--spacing);
+}</div>
+            </article>
+
+            <article class="lesson-card">
+                <h2>2. Flexbox & Grid Layouts</h2>
+                <p>Modern CSS layout systems that replace float-based hacks.</p>
+                <ul>
+                    <li><strong>Flexbox</strong>: One-dimensional layouts (navigation, centering)</li>
+                    <li><strong>Grid</strong>: Two-dimensional complex layouts (dashboards, galleries)</li>
+                </ul>
+            </article>
+
+            <article class="lesson-card">
+                <h2>3. Responsive Design with Media Queries</h2>
+                <p>Make your site work on phones, tablets, and desktops seamlessly.</p>
+                <div class="css-demo">
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}</div>
+            </article>
+
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <span class="quiz-badge">🧠 Knowledge Check</span>
+                    <h2>Module 2 Assessment</h2>
+                    <p style="color: var(--text-muted);">Score at least <strong>70%</strong> to unlock Module 3: JavaScript Basics</p>
+                </div>
+
+                <form id="quizForm">
+                    <div class="question-card">
+                        <p>1. Which CSS feature is best for two-dimensional layouts?</p>
+                        <label class="option" onclick="selectOption(this, 'q1', 'a')">
+                            <input type="radio" name="q1" value="a"><span>Flexbox</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q1', 'b')">
+                            <input type="radio" name="q1" value="b"><span>CSS Grid</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q1', 'c')">
+                            <input type="radio" name="q1" value="c"><span>Float</span>
+                        </label>
+                    </div>
+
+                    <div class="question-card">
+                        <p>2. How do you define a CSS variable?</p>
+                        <label class="option" onclick="selectOption(this, 'q2', 'a')">
+                            <input type="radio" name="q2" value="a"><span>$primary: blue;</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q2', 'b')">
+                            <input type="radio" name="q2" value="b"><span>--primary: blue;</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q2', 'c')">
+                            <input type="radio" name="q2" value="c"><span>@primary: blue;</span>
+                        </label>
+                    </div>
+
+                    <div class="question-card">
+                        <p>3. What does the :root selector target?</p>
+                        <label class="option" onclick="selectOption(this, 'q3', 'a')">
+                            <input type="radio" name="q3" value="a"><span>The first element in HTML</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q3', 'b')">
+                            <input type="radio" name="q3" value="b"><span>The document's root element (global scope)</span>
+                        </label>
+                        <label class="option" onclick="selectOption(this, 'q3', 'c')">
+                            <input type="radio" name="q3" value="c"><span>All elements with root class</span>
+                        </label>
+                    </div>
+
+                    <button type="button" class="btn-primary" id="submitBtn" onclick="calculateScore()">Submit Answers</button>
+                </form>
+
+                <div id="resultPanel" class="result-panel">
+                    <div class="result-icon" id="resultIcon"></div>
+                    <div class="result-title" id="resultTitle"></div>
+                    <p id="resultMessage"></p>
+                    <a href="module3.html" id="nextBtn" class="next-module-btn hidden">Proceed to Module 3 ➡️</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        const correctAnswers = { q1: 'b', q2: 'b', q3: 'b' };
+
+        function selectOption(el, name, val) {
+            el.parentElement.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+        }
+
+        function calculateScore() {
+            let score = 0;
+            const total = Object.keys(correctAnswers).length;
+            
+            for (let q in correctAnswers) {
+                const sel = document.querySelector(`input[name="${q}"]:checked`);
+                if (sel && sel.value === correctAnswers[q]) score++;
+            }
+
+            const pct = Math.round((score / total) * 100);
+            const panel = document.getElementById('resultPanel');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const msg = document.getElementById('resultMessage');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            panel.classList.add('show');
+            submitBtn.disabled = true;
+
+            if (pct >= 70) {
+                panel.className = 'result-panel success show';
+                icon.textContent = '🎉';
+                title.textContent = 'Excellent Work!';
+                msg.innerHTML = `You scored <strong>${pct}%</strong> (${score}/${total}).<br>Module 3 is now unlocked!`;
+                nextBtn.classList.remove('hidden');
+                
+                localStorage.setItem('swal_module3_unlocked', 'true');
+                localStorage.setItem('swal_module2_completed', 'true');
+                localStorage.setItem('swal_progress', '60');
+                
+                createConfetti();
+            } else {
+                panel.className = 'result-panel fail show';
+                icon.textContent = '❌';
+                title.textContent = 'Review Needed';
+                msg.innerHTML = `You scored <strong>${pct}%</strong>. Need 70% to pass.`;
+                setTimeout(() => submitBtn.disabled = false, 3000);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            const container = document.getElementById('celebration');
+            for (let i = 0; i < 50; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + '%';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDelay = Math.random() * 2 + 's';
+                c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(c);
+                setTimeout(() => c.remove(), 3000);
+            }
+        }
+
+        // Check previous unlocks
+        window.onload = () => {
+            if (localStorage.getItem('swal_module3_unlocked')) {
+                document.getElementById('mod3').classList.remove('locked');
+                document.getElementById('mod3').querySelector('.module-icon').textContent = '📗';
+            }
+        };
+    </script>
+</body>
+</html>
