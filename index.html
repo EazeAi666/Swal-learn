@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAL Learn - Free AI & Tech Courses</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding-bottom: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-icon {
+            color: #ffd700;
+        }
+
+        .tagline {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .user-bar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 0 1rem 2rem 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info {
+            text-align: left;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            padding: 0 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .course-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .course-desc {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .locked {
+            opacity: 0.6;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><span class="logo-icon">🎓</span> SWAL Learn</div>
+        <div class="tagline">Free AI & Tech Courses by SWAL Organization</div>
+    </div>
+
+    <div class="user-bar">
+        <div class="avatar">AD</div>
+        <div class="user-info">
+            <div class="user-name">Adesina</div>
+            <div class="user-role">Student</div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="courses-grid">
+        <!-- AI Courses -->
+        <a href="courses/ai-basics.html" class="course-card">
+            <span class="course-icon">🤖</span>
+            <div class="course-title">AI Basics</div>
+            <div class="course-desc">Introduction to Artificial Intelligence</div>
+        </a>
+
+        <a href="courses/prompt-engineering.html" class="course-card">
+            <span class="course-icon">✨</span>
+            <div class="course-title">Prompt Engineering</div>
+            <div class="course-desc">Master AI communication</div>
+        </a>
+
+        <a href="courses/building-ai-apps.html" class="course-card">
+            <span class="course-icon">⚡</span>
+            <div class="course-title">Building AI Apps</div>
+            <div class="course-desc">Create real AI applications</div>
+        </a>
+
+        <!-- Tech Courses -->
+        <a href="courses/machine-learning.html" class="course-card">
+            <span class="course-icon">🧠</span>
+            <div class="course-title">Machine Learning</div>
+            <div class="course-desc">ML fundamentals & models</div>
+        </a>
+
+        <a href="courses/cybersecurity.html" class="course-card">
+            <span class="course-icon">🔒</span>
+            <div class="course-title">Cybersecurity</div>
+            <div class="course-desc">Protect systems & data</div>
+        </a>
+
+        <!-- Web Development - FIXED LINKS -->
+        <a href="courses/web-development1.html" class="course-card">
+            <span class="course-icon">🌐</span>
+            <div class="course-title">Web Development</div>
+            <div class="course-desc">Build modern websites - Module 1</div>
+        </a>
+
+        <!-- English IT Courses -->
+        <a href="courses/english-it-module-1.html" class="course-card">
+            <span class="course-icon">📚</span>
+            <div class="course-title">English IT Module 1</div>
+            <div class="course-desc">IT English fundamentals</div>
+        </a>
+
+        <a href="courses/english-it-module-2.html" class="course-card">
+            <span class="course-icon">📖</span>
+            <div class="course-title">English IT Module 2</div>
+            <div class="course-desc">Advanced IT English</div>
+        </a>
+
+        <!-- Python Courses -->
+        <a href="courses/python-module-1.html" class="course-card">
+            <span class="course-icon">🐍</span>
+            <div class="course-title">Python Module 1</div>
+            <div class="course-desc">Python basics</div>
+        </a>
+
+        <a href="courses/python-module-2.html" class="course-card">
+            <span class="course-icon">🐍</span>
+            <div class="course-title">Python Module 2</div>
+            <div class="course-desc">Functions & loops</div>
+        </a>
+
+        <a href="courses/python-module-3.html" class="course-card locked">
+            <span class="course-icon">🐍</span>
+            <div class="course-title">Python Module 3</div>
+            <div class="course-desc">Data structures</div>
+        </a>
+
+        <a href="courses/python-module-4.html" class="course-card locked">
+            <span class="course-icon">🐍</span>
+            <div class="course-title">Python Module 4</div>
+            <div class="course-desc">File handling & OOP</div>
+        </a>
+
+        <a href="courses/python-module-5.html" class="course-card locked">
+            <span class="course-icon">🐍</span>
+            <div class="course-title">Python Module 5</div>
+            <div class="course-desc">Modules & packages</div>
+        </a>
+
+        <a href="courses/python-module-6.html" class="course-card locked">
+            <span class="course-icon">🐍</span>
+            <div class="course-title">Python Module 6</div>
+            <div class="course-desc">Advanced Python concepts</div>
+        </a>
+    </div>
+
+    <script>
+        // Check login status
+        if (!localStorage.getItem('swal_user')) {
+            // Redirect to login if not logged in
+            // window.location.href = 'login.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('swal_user');
+            localStorage.removeItem('swal_progress');
+            alert('Logged out successfully!');
+            // window.location.href = 'login.html';
+        }
+
+        // Prevent clicking on locked courses
+        document.querySelectorAll('.locked').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('🔒 Complete previous modules to unlock this course!');
+            });
+        });
+    </script>
+</body>
+</html>
